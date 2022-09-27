@@ -1,5 +1,9 @@
 {
   "pages":[
+    "pages/main/main",
+    "pages/daily_task/daily_task",
+    "pages/rank/rank",
+    "pages/settings/settings",
     "pages/index/index",
     "pages/logs/logs"
   ],

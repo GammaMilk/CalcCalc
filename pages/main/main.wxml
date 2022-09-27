@@ -1,0 +1,6 @@
+<!--pages/main/main.wxml-->
+<image src='/image/panda.jpg' mode="aspectFill" style="width: 260rpx; height: 260rpx; display: inline-block; box-sizing: border-box; position: relative; left: 430rpx; top: 100rpx"></image>
+<view style="position: relative; left: 26rpx; top: 18rpx; width: 226rpx; height: 42rpx; display: block; box-sizing: border-box">Hi,Nico</view>
+<navigator url="../daily_task/daily_task" open-type="navigate" hover-class="navigator-hover" style="position: relative; left: 0rpx; top: 400rpx">daily_task</navigator>
+<navigator url="../rank/rank" open-type="navigate" hover-class="navigator-hover" style="position: relative; left: 0rpx; top: 500rpx">rank</navigator>
+<navigator url="../settings/settings" open-type="navigate" hover-class="navigator-hover" style="position: relative; left: 0rpx; top: 600rpx">settings</navigator>
