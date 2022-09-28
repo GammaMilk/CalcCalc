@@ -1,4 +1,4 @@
-// pages/main/main.js
+// pages/ranked_match/ranked_match.js
 Page({
 
   /**
@@ -8,12 +8,6 @@ Page({
 
   },
 
-clickImg(){
-  wx.navigateTo({
-    url: '../settings/settings',
-  })
-},
-  
   /**
    * 生命周期函数--监听页面加载
    */
