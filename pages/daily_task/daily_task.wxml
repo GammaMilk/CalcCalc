@@ -1,2 +1,2 @@
 <!--pages/daily_task/daily_task.wxml-->
-<text>pages/daily_task/daily_task.wxml</text>
+<navigator class='start' url="../start/start">start</navigator>

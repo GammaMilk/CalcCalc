@@ -4,6 +4,7 @@
     "pages/daily_task/daily_task",
     "pages/rank/rank",
     "pages/ranked_match/ranked_match",
+    "pages/start/start",
     "pages/settings/settings"
   ],
   "window":{
