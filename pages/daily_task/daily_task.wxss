@@ -4,12 +4,16 @@ page {
   height: 100%;
 }
 
+.notice {
+  position: relative;
+  top: 250rpx; 
+  left:250rpx;
+  font-size: 30px;
+}
+
 .start {
   position: relative;
-  left: 334rpx;
-  top: 750rpx; 
-  width: 84rpx; 
-  height: 44rpx; 
-  display: block; 
-  box-sizing: border-box
+  top: 700rpx; 
+  left:220rpx;
+  font-size: 30px;
 }

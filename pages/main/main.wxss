@@ -24,8 +24,9 @@ page {
 
 .helloSize {
   position: relative;
-  left: 30rpx; 
-  top: 18rpx; 
+  font-size: 30px;
+  left: 80rpx; 
+  top: 28rpx; 
   width: 250rpx; 
   height: 50rpx; 
   display: flex; 
@@ -35,9 +36,21 @@ page {
 }
 
 .container{
-  top:110rpx;
-  width: 750rpx; 
-  height: 800rpx; 
-  display: flex; 
-  box-sizing: border-box; position: relative; left: 0rpx; 
+  position:relative;
+  left: 0rpx;
+  top:120rpx;
+  height:400rpx;
+  display: flex; /*弹性显示结构*/
+  flex-direction: row;/*横向显示*/
+}
+
+.item {
+  width: 50%;
+  text-align: center;
+}
+
+.task {
+  position:relative;
+  top:320rpx;
+  text-align: center;
 }

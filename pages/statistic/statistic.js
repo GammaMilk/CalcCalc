@@ -1,42 +1,18 @@
-// pages/settings/settings.js
+// pages/statistic/statistic.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    userInfo:{
-      nickName:"User",
-      avatarUrl:"/image/"+(Math.random()*2+1).toFixed(0)+".jpg"
-    }
+
   },
 
-  clickImg(){
-    wx.navigateTo({
-      url: '../personal_info/personal_info'
-    })
-  },
-
-  getStorageUserInfo(){
-    var that = this;
-    let nowTime = Date.now();
-    let oldTime = wx.getStorageSync("userInfoStorageTime");
-    let userInfo = wx.getStorageSync("userInfo");
-    if ( userInfo.nickName != undefined && userInfo.nickName != null && userInfo.nickName != "" ) {
-      if (oldTime && nowTime < oldTime) {
-        that.setData({
-          userInfo:userInfo
-        })
-        return;
-      }
-    }
-  },
- 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.getStorageUserInfo();
+
   },
 
   /**

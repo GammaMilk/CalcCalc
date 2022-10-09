@@ -2,9 +2,12 @@
   "pages":[
     "pages/main/main",
     "pages/daily_task/daily_task",
+    "pages/statistic/statistic",
     "pages/rank/rank",
-    "pages/ranked_match/ranked_match",
     "pages/start/start",
+    "pages/personal_info/personal_info",
+    "pages/finish/finish",
+    "pages/question_difficulty/question_difficulty",
     "pages/settings/settings"
   ],
   "window":{

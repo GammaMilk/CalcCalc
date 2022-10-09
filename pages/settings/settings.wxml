@@ -1,2 +1,16 @@
 <!--pages/settings/settings.wxml-->
-<text>pages/settings/settings.wxml</text>
+<view class="imgSize"> 
+  <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" bindtap="clickImg"></image>
+</view>
+
+<view class='helloSize'>
+  <text>{{userInfo.nickName}}</text>
+</view>
+
+<view class='container'>
+  <navigator class='item' url='../personal_info/personal_info'>个人信息</navigator>
+  <navigator class='item' url='../question_difficulty/question_difficulty'>难度设置</navigator>
+  <navigator class='item'>大会员</navigator>
+  <navigator class='item'>排名</navigator>
+  <navigator class='item'>统计</navigator>
+</view>

@@ -1,16 +1,15 @@
 <!--pages/main/main.wxml-->
 <view class="imgSize"> 
-  <image class='head' src='/image/panda.jpg' mode="aspectFill" bindtap="clickImg"></image>
+  <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" bindtap="clickImg"></image>
 </view>
 
 <view class='helloSize'>
-  <text>Hi,Nico!</text>
+  <text>Hi,{{userInfo.nickName}}!</text>
 </view>
 
 <view class="container">
-  <navigator url="../daily_task/daily_task" open-type="navigate" hover-class="navigator-hover">Task Today
-  </navigator>
-  <navigator url="../rank/rank" open-type="navigate" hover-class="navigator-hover" >Rank</navigator>
-  <navigator url="../ranked_match/ranked_match" open-type="navigate" hover-class="navigator-hover">Ranked Match</navigator>
+  <navigator url="../statistic/statistic" open-type="navigate" hover-class="navigator-hover" class='item' >统计</navigator>
+  <navigator url="../rank/rank" open-type="navigate" hover-class="navigator-hover" class='item' >排行</navigator>
 </view>
 
+<navigator url="../daily_task/daily_task" open-type="navigate" hover-class="navigator-hover" class='task'>今日任务</navigator>

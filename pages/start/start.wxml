@@ -1,6 +1,13 @@
 <!--pages/start/start.wxml-->
-<view class='screen'>{{result}}</view>
+<view>{{count}}</view>
 
+<view class='screen'>
+  <view class='question'>{{num2}}</view>
+  <view class='question'>{{operator}}</view>
+  <view class='question'>{{num1}}</view>
+</view>
+
+<view class='answer'>= {{result}}</view>
 
 <view class='test-bg'>
   <view class='btnGroup'>

@@ -1,1 +1,40 @@
 /* pages/settings/settings.wxss */
+.imgSize {
+  border-radius: 50%;
+  overflow: hidden;
+  width: 120rpx;
+  height: 120rpx;
+  position: relative;
+  background: yellow;
+  left: 500rpx;
+  top: 110rpx;
+}
+
+.imgSize image {
+  border-radius: 50%;
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.helloSize {
+  position: relative;
+  font-size: 30px;
+  left: 80rpx; 
+  top: 28rpx; 
+  width: 250rpx; 
+  height: 50rpx; 
+  display: flex; 
+  box-sizing: border-box;
+  align-items:center;
+  justify-content:center;
+}
+
+.container {
+  position: relative;
+  top:110rpx;
+  width: 750rpx; 
+  height: 800rpx; 
+  display: flex; 
+  box-sizing: border-box; 
+  left: 0rpx; 
+}

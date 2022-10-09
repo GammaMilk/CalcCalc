@@ -1,0 +1,42 @@
+<!--pages/question_difficulty/question_difficulty.wxml-->
+<view class='difficulty'> 
+  <text>难度评级</text>
+  <view class='level'>{{level[1]}}</view>
+</view>
+
+<view class='select_first' bindtap='bindShowMsg'>
+        <text>{{arithmeticMode}}</text>
+</view>
+
+<view class='container'>
+  <view class="select_box" wx:if="{{select}}">
+    <view class="select_one" bindtap="mySelect" data-name="加减">加减</view>
+    <view class="select_one" bindtap="mySelect" data-name="加减乘">加减乘</view>
+    <view class="select_one" bindtap="mySelect" data-name="加减乘除">加减乘除</view>
+  </view>
+  <view class='digit1Bits'>
+    操作数一的位数
+    <button class='digit1BitsSub' bindtap="digit1BitsSubTap">-</button>
+    <view>{{digit1Bits}}</view>
+    <button class='digit1BitsAdd' bindtap="digit1BitsAddTap">+</button>
+  </view>
+  <view class='digit2Bits'>
+    操作数二的位数
+    <button class='digit2BitsSub' bindtap="digit2BitsSubTap">-</button>
+    <view>{{digit2Bits}}</view>
+    <button class='digit2BitsAdd' bindtap="digit2BitsAddTap">+</button>
+  </view>
+  <view class='quantityOfQuestions'>
+    每日题数
+    <button class='quantitySub5' bindtap="quantitySub5Tap">-5</button>
+    <view>{{quantityOfQuestions}}</view>
+    <button class='quantityAdd5' bindtap="quantityAdd5Tap">+5</button>
+  </view>
+  <button type="primary" class='save' bindtap="saveTap">保存</button>
+</view>
+
+
+
+
+
+

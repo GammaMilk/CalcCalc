@@ -1,4 +1,4 @@
-// pages/ranked_match/ranked_match.js
+// pages/finish/finish.js
 Page({
 
   /**
