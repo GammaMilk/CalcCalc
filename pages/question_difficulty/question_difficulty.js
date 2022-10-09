@@ -19,7 +19,7 @@ Page({
     this.setData({
         select:!this.data.select
     })
-},
+  },
 
   //下拉选择，并存储选择的难度
   mySelect(e) {
@@ -29,74 +29,70 @@ Page({
         arithmeticMode: name,
         select: false
     })
-},
+  },
 
-digit1BitsSubTap(e){
-  if(this.data.digit1Bits==1) return
-  else {
-    this.setData({
-      digit1Bits:this.data.digit1Bits-1
-    })
-  }
-},
+  digit1BitsSubTap(e){
+    if(this.data.digit1Bits==1) return
+    else {
+      this.setData({
+        digit1Bits:this.data.digit1Bits-1
+      })
+    }
+  },
 
-digit1BitsAddTap(e){
-  if(this.data.digit1Bits==5) return
-  else {
-    this.setData({
-      digit1Bits:this.data.digit1Bits+1
-    })
-  }
-},
+  digit1BitsAddTap(e){
+    if(this.data.digit1Bits==5) return
+    else {
+      this.setData({
+        digit1Bits:this.data.digit1Bits+1
+      })
+    }
+  },
 
-digit2BitsSubTap(e){
-  if(this.data.digit2Bits==1) return
-  else {
-    this.setData({
-      digit2Bits:this.data.digit2Bits-1
-    })
-  }
-},
+  digit2BitsSubTap(e){
+    if(this.data.digit2Bits==1) return
+    else {
+      this.setData({
+        digit2Bits:this.data.digit2Bits-1
+      })
+    }
+  },
 
-digit2BitsAddTap(e){
-  if(this.data.digit2Bits==5) return
-  else {
-    this.setData({
-      digit2Bits:this.data.digit2Bits+1
-    })
-  }
-},
+  digit2BitsAddTap(e){
+    if(this.data.digit2Bits==5) return
+    else {
+      this.setData({
+        digit2Bits:this.data.digit2Bits+1
+      })
+    }
+  },
 
-quantitySub5Tap(e){
-  if(this.data.quantityOfQuestions==5) return
-  else {
-    this.setData({
-      quantityOfQuestions:this.data.quantityOfQuestions-5
-    })
-  }
-},
+  quantitySub5Tap(e){
+    if(this.data.quantityOfQuestions==5) return
+    else {
+      this.setData({
+        quantityOfQuestions:this.data.quantityOfQuestions-5
+      })
+    }
+  },
 
-quantityAdd5Tap(e){
-  if(this.data.quantityOfQuestions==50) return
-  else {
-    this.setData({
-      quantityOfQuestions:this.data.quantityOfQuestions+5
-    })
-  }
-},
+  quantityAdd5Tap(e){
+    if(this.data.quantityOfQuestions==50) return
+    else {
+      this.setData({
+        quantityOfQuestions:this.data.quantityOfQuestions+5
+      })
+    }
+  },
 
-saveTap(e) {  //将修改后的做题任务存储到本地
-  wx.setStorageSync("arithmeticLevel",this.data.arithmeticLevel.indexOf(this.data.arithmeticMode))
-  wx.setStorageSync("digit1Bits",this.data.digit1Bits)
-  wx.setStorageSync("digit2Bits",this.data.digit2Bits)
-  wx.setStorageSync("quantityOfQuestions",this.data.quantityOfQuestions)
-},
+  saveTap(e) {  //将修改后的做题任务存储到本地
+    wx.setStorageSync("arithmeticLevel",this.data.arithmeticLevel.indexOf(this.data.arithmeticMode))
+    wx.setStorageSync("digit1Bits",this.data.digit1Bits)
+    wx.setStorageSync("digit2Bits",this.data.digit2Bits)
+    wx.setStorageSync("quantityOfQuestions",this.data.quantityOfQuestions)
+  },
 
-  /**
-   * 生命周期函数--监听页面加载
-   * 加载存储的做题任务
-   */
-  onLoad(options) { 
+  setStorageData(){
     try {
       let level=wx.getStorageSync("arithmeticLevel")
       let bits1=wx.getStorageSync("digit1Bits")
@@ -116,6 +112,14 @@ saveTap(e) {  //将修改后的做题任务存储到本地
   },
 
   /**
+   * 生命周期函数--监听页面加载
+   * 加载存储的做题任务
+   */
+  onLoad(options) { 
+    
+  },
+
+  /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady() {
@@ -126,7 +130,7 @@ saveTap(e) {  //将修改后的做题任务存储到本地
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    this.setStorageData();
   },
 
   /**
