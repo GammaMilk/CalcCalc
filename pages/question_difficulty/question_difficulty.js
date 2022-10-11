@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    level:['easy','midium','hard'],
+    level:['easy','medium','hard'],
     select: false,
     arithmeticLevel:['加减','加减乘','加减乘除'],
     arithmeticMode: '加减',
@@ -166,5 +166,6 @@ Page({
    */
   onShareAppMessage() {
 
-  }
+  },
+  
 })

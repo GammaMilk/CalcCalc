@@ -40,8 +40,8 @@ page {
   left: 0rpx;
   top:120rpx;
   height:400rpx;
-  display: flex; /*弹性显示结构*/
-  flex-direction: row;/*横向显示*/
+  display: flex;
+  flex-direction: row;
 }
 
 .item {
