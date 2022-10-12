@@ -1,0 +1,5 @@
+<!--pages/personal_info/personal_info.wxml-->
+<view class="imgSize"> 
+  <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" ></image>
+</view>
+

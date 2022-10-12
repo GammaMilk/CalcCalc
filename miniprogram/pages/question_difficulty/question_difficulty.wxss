@@ -1,0 +1,142 @@
+/* pages/question_difficulty/question_difficulty.wxss */
+page{
+  width: 100%;
+  height: 100%;
+}
+
+.difficulty{
+  padding-top: 10%;
+  padding-bottom: 15%;
+  text-align: center;
+}
+
+.TxtDifEva{
+  font-size: large;
+}
+
+.level1{
+  position: relative;
+  
+  font-size: 4rem;
+  color: #00B6C3;
+}
+.level2{
+  position: relative;
+
+  font-size: 4rem;
+  color: #FFB800
+}
+.level3{
+  font-size: 4rem;
+  color: #FF2D55;
+}
+.container{
+  width: 90%;
+  height: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  left: 5%;
+  border-radius: 5%;
+  border-style:groove;
+  border-color: gray;
+  background-color: lightgray;
+}
+
+.select_first{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.select_box {
+  background-color: #eee;
+  width: 40%;
+  position: absolute;
+  top: 15%;
+  z-index: 1;
+  overflow: hidden;
+  animation: myfirst 0.5s;
+}
+.select_one {
+  height: 60rpx;
+  line-height: 60rpx;
+  border: 1px solid gray;
+}
+.digit1Bits{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  height: 15%;
+  border: gray;
+  border-style:groove;
+  border-bottom: none;
+}
+.digit1BitsSub{
+  position: absolute;
+  text-align: center;
+  right: 21%;
+}
+
+.TxtBits{
+  font-size: large;
+  position: absolute;
+  right: 15%;
+  
+}
+.digit1BitsAdd{
+  position: absolute;
+  right: 0%;
+}
+
+.digit2Bits{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  height: 15%;
+  border: gray;
+  border-style:groove;
+  border-bottom: none;
+}
+.digit2BitsSub{
+  position: absolute;
+  text-align: center;
+  right: 21%;
+}
+
+.digit2BitsAdd{
+  position: absolute;
+  right: 0%;
+}
+.quantityOfQuestions{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  height: 15%;
+  border: gray;
+  border-style:groove;
+}
+
+.quantitySub5{
+  position: absolute;
+  right: 27%;
+}
+
+.saveInt{
+  position: absolute;
+  right: 18%;
+}
+.quantityAdd5{
+  position: absolute;
+  right: 0%;
+}
+.save{
+  margin-top: 5%;
+}

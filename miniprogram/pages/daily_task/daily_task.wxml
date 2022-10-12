@@ -1,0 +1,3 @@
+<!--pages/daily_task/daily_task.wxml-->
+<view class='notice'>今日任务</view>
+<navigator class='start' url="../start/start">一起摇滚吧</navigator>
