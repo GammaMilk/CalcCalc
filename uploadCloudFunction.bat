@@ -1,0 +1,1 @@
+"D:\Program Files\Tencent\微信web开发者工具\cli.bat" cloud functions deploy --e cloud1-4g86myxu7e413a6c --n quickstartFunctions --r --project "D:\Desktop\CalcCalc" --report_first --report

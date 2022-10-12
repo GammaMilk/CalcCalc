@@ -1,0 +1,17 @@
+/* pages/bigvip/bigvip.wxss */
+.imgSize {
+  border-radius: 50%;
+  overflow: hidden;
+  width: 150rpx;
+  height: 150rpx;
+  position: relative;
+  background: yellow;
+  left: 300rpx;
+  top: 110rpx;
+}
+
+.imgSize image {
+  border-radius: 50%;
+  width: 150rpx;
+  height: 150rpx;
+}

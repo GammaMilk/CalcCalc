@@ -1,0 +1,6 @@
+<!--pages/finish/finish.wxml-->
+<image src='/image/finish.jpg'></image>
+<view>
+  <button bindtap="continueTap">再来十道</button>
+  <button type="primary" bindtap="finishTap">完成</button>
+</view>
