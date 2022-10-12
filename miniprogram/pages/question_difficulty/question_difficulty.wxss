@@ -31,10 +31,12 @@ page{
   color: #FF2D55;
 }
 .container{
-  padding: 0%;
   width: 90%;
-  height: 60%;
-  position: absolute;
+  height: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   left: 5%;
   border-radius: 5%;
   border-style:groove;
@@ -136,5 +138,5 @@ page{
   right: 0%;
 }
 .save{
-  margin-bottom: 5%;
+  margin-top: 5%;
 }

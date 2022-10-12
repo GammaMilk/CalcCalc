@@ -1,15 +1,29 @@
 <!--pages/main/main.wxml-->
-<view class="imgSize"> 
-  <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" bindtap="clickImg"></image>
-</view>
-
-<view class='helloSize'>
-  <text>Hi,{{userInfo.nickName}}!</text>
+<view class='helloUser'>
+  <view class='helloSize'>
+    <text>Hi,\n{{userInfo.nickName}}!</text>
+  </view>
+  <view class="imgSize"> 
+    <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" bindtap="clickImg"></image>
+  </view>
 </view>
 
 <view class="container">
-  <navigator url="../statistic/statistic" open-type="navigate" hover-class="navigator-hover" class='item' >统计</navigator>
-  <navigator url="../rank/rank" open-type="navigate" hover-class="navigator-hover" class='item' >排行</navigator>
+  <view class="item" style="border-color: #54BCBD;">
+  <image src="/image/statistics.png" style="width: 33%; height: 33%;"></image>
+  <navigator url="../statistic/statistic" open-type="navigate" hover-class="navigator-hover" style="height: 100%;width: 300rpx;position: absolute;"></navigator>
+  <text style="font-size: 30px;position: relative;top:10%">统计</text>
+  </view>
+  <view class="item" style="border-color: #A16222;">
+  <image src="/image/trophy.png" style="width: 33%; height: 33%;"></image>
+  <navigator url="../rank/rank" open-type="navigate" hover-class="navigator-hover" style="height: 100%;width: 300rpx;position: absolute;" ></navigator>
+  <text style="font-size: 30px;position: relative;top:10%">排行</text>
+  </view>
 </view>
 
-<navigator url="../daily_task/daily_task" open-type="navigate" hover-class="navigator-hover" class='task'>今日任务</navigator>
+<view class='task' style="border-color: #81B337;">
+  <image src="/image/daily.png" style="width: 300rpx; height: 300rpx"></image>
+  <text style="font-size: 30px;position: relative;top:10%">今日任务</text>
+<navigator url="../daily_task/daily_task" open-type="navigate" hover-class="navigator-hover" style="height: 40%;width: 90%;position: absolute;"></navigator>
+</view>
+

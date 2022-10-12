@@ -90,6 +90,10 @@ Page({
     wx.setStorageSync("digit1Bits",this.data.digit1Bits)
     wx.setStorageSync("digit2Bits",this.data.digit2Bits)
     wx.setStorageSync("quantityOfQuestions",this.data.quantityOfQuestions)
+    wx.showToast({
+      title: '已保存',
+      duration: 1000
+    })
   },
 
   setStorageData(){
@@ -98,7 +102,7 @@ Page({
       let bits1=wx.getStorageSync("digit1Bits")
       let bits2=wx.getStorageSync("digit2Bits")
       let quantity=wx.getStorageSync("quantityOfQuestions")
-      if (level&&bits1&&bits2&&quantity) {
+      if ((level+1)&&bits1&&bits2&&quantity) {
         this.setData({
           arithmeticMode:this.data.arithmeticLevel[level],
           digit1Bits:bits1,
