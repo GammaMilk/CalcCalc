@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/main/main",
+    "pages/test/test",
     "pages/daily_task/daily_task",
     "pages/statistic/statistic",
     "pages/rank/rank",
