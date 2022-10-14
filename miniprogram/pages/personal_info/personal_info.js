@@ -9,13 +9,150 @@ Page({
       nickName:"User",
       avatarUrl:"/image/"+(Math.random()*2+1).toFixed(0)+".jpg"
     },
+    inputValue: '',
   },
 
-  clickImg(){
-    wx.navigateTo({
-      url: '../change_profile_photo/change_profile_photo'
+  getStorageUserInfo(){
+    let userInfo = wx.getStorageSync("userInfo");
+    if (userInfo) {
+        this.setData({
+          userInfo:userInfo,
+        })
+        return;
+    }
+  },
+
+  // upload an image to temp path and then call uploadPhotoToDatabase function
+  uploadImg(){
+    var that=this
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
+      sourceType: ['album'],
+      success(res) {
+        var photoTempPath = res.tempFiles[0].tempFilePath
+        that.uploadPhotoToDatabase(photoTempPath)
+      }
     })
   },
+
+  // storage the image user uploaded and set it in db
+  uploadPhotoToDatabase(photoTempPath) {
+    let nickName=wx.getStorageSync('userInfo').nickName
+    let that=this
+    wx.cloud.uploadFile({
+      cloudPath:"photo/"+nickName+Date.now()+".jpg",
+      filePath:photoTempPath
+    })
+    .then(res=>{
+      //console.log(res.fileID)
+      wx.setStorageSync('userInfo', {nickName:nickName,avatarUrl:res.fileID})
+      that.setData({
+        userInfo:{nickName:nickName,avatarUrl:res.fileID}
+      })
+      // get user's _openid and update avatarUrl
+      wx.cloud.callFunction({
+        name: 'quickstartFunctions',
+        data:{
+          type:'getOpenId'
+        },
+        success: ress => {
+          let openId=ress.result.userInfo.openId
+          const db=wx.cloud.database()
+          db.collection('userlist').where({
+            _openid:openId
+          }).update({
+            data:{
+              avatarUrl:res.fileID
+            },
+            success: function() {
+              console.log("success")
+            }
+          })
+        }
+    })
+  })
+},
+
+  uploadImgTap(){
+    this.uploadImg()
+  },
+
+  randomImgTap(){
+    let nickName=wx.getStorageSync('userInfo').nickName
+    wx.setStorageSync('userInfo', {nickName:nickName,avatarUrl:"/image/"+(Math.random()*2+1).toFixed(0)+".jpg"})
+    this.setData({
+      userInfo:{
+        nickName:this.data.nickName,
+        avatarUrl:"/image/"+(Math.random()*2+1).toFixed(0)+".jpg"
+      }
+    })
+  },
+
+  bindKeyInput(e){
+    this.setData({
+      inputValue: e.detail.value
+    })
+  },
+
+  // 提交新的昵称到数据库
+  submitTap(){
+    //console.log(this.data.inputValue)
+    let nickName=this.data.inputValue
+    let that=this
+    if(!nickName) { // 输入框为空时弹出窗口
+      wx.showToast({
+        title: '请勿输入空值！',
+        icon: 'none',
+        duration: 2000//持续的时间
+      })
+      return
+    }
+    wx.cloud.callFunction({
+      name: 'quickstartFunctions',
+      data:{
+        type:'getOpenId'
+      },
+      success: res => {
+        let openId=res.result.userInfo.openId
+        const db=wx.cloud.database()
+        const _ = db.command
+        db.collection('userlist').where({
+          _openid:openId
+        }).get().then(ress => {
+          //console.log(ress.data[0].coin)
+          if(ress.data[0].coin<6) { //硬币小于六个弹出弹窗
+            wx.showToast({
+              title: '硬币小于6个，快去攒点硬币吧',
+              icon: 'none',
+              duration: 2000//持续的时间
+            })
+          }else{  // 修改名字，改本地、数据库和page.data，并减少六个硬币
+            let avatarUrl=wx.getStorageSync('userInfo').avatarUrl
+            that.setData({
+              userInfo:{
+                nickName:nickName,
+                avatarUrl:avatarUrl
+              }
+            })
+            wx.setStorageSync('userInfo', that.data.userInfo)
+            db.collection('userlist').where({
+              _openid:openId
+            }).update({
+              data:{
+                nickName:nickName,
+                coin:_.inc(-6)
+              },success: function() {
+                console.log("success")
+              }
+            })
+          }
+        }
+        )
+      }
+    })
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -34,24 +171,14 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    this.getStorageUserInfo();
   },
 
-  getStorageUserInfo(){
-    var that = this;
-    let userInfo = wx.getStorageSync("userInfo");
-    if ( userInfo.nickName != undefined && userInfo.nickName != null && userInfo.nickName != "" ) {
-        that.setData({
-          userInfo:userInfo
-        })
-        return;
-    }
-  },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
-    this.getStorageUserInfo();
+  onLoad() {
+
   },
 
 

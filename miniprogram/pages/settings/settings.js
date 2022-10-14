@@ -8,21 +8,76 @@ Page({
     userInfo:{
       nickName:"User",
       avatarUrl:"/image/"+(Math.random()*2+1).toFixed(0)+".jpg"
-    }
+    },
+    isVisitor:true
   },
 
-  clickImg(){
-    wx.navigateTo({
-      url: '../personal_info/personal_info'
+  // 对游客弹出一个禁止窗口 
+  sendMsgBox(){
+    wx.showToast({
+      title: '该功能暂不对游客开放，请回到首页授权后重试',
+      icon: 'none',
+      duration: 2000//持续的时间
     })
   },
 
+  // 判断是否为游客模式，若为游客则暂时无法进入
+  clickImg(){
+    if(!this.data.isVisitor){
+      wx.navigateTo({
+        url: '../personal_info/personal_info'
+      })
+    }else {
+      this.sendMsgBox()
+    }
+  },
+
+  personalInfoTap(){
+    this.clickImg()
+  },
+
+  difficultySettingTap(){
+    wx.navigateTo({
+      url: '../question_difficulty/question_difficulty',
+    })
+  },
+
+  bigVIPTap(){
+    if(!this.data.isVisitor){
+      wx.navigateTo({
+        url: '../bigvip/bigvip'
+      })
+    }else {
+      this.sendMsgBox()
+    }
+  },
+
+  rankTap(){
+    if(!this.data.isVisitor){
+      wx.navigateTo({
+        url: '../rank/rank'
+      })
+    }else {
+      this.sendMsgBox()
+    }
+  },
+
+  statisticTap(){
+    if(!this.data.isVisitor){
+      wx.navigateTo({
+        url: '../statistic/statistic'
+      })
+    }else {
+      this.sendMsgBox()
+    }
+  },
+
   getStorageUserInfo(){
-    var that = this;
     let userInfo = wx.getStorageSync("userInfo");
-    if ( userInfo.nickName != undefined && userInfo.nickName != null && userInfo.nickName != "" ) {
-        that.setData({
-          userInfo:userInfo
+    if (userInfo) {
+        this.setData({
+          userInfo:userInfo,
+          isVisitor:false
         })
         return;
     }

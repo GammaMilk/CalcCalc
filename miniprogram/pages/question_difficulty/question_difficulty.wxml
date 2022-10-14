@@ -1,9 +1,16 @@
 <!--pages/question_difficulty/question_difficulty.wxml-->
 <view class='difficulty' id="DifficultySelectPage"> 
   <text  class="TxtDifEva">难度评级</text>
-  <!-- <view class='level1' >{{level[0]}}</view> -->
-  <view class='level2' >{{level[1]}}</view>
-  <!-- <view class='level3' >{{level[2]}}</view> -->
+
+  <block wx:if="{{(arithmeticMode=='加减'&&digit1Bits<=3&&digit2Bits<=3)||(arithmeticMode=='加减乘'&&digit1Bits==1&&digit2Bits==1)||(arithmeticMode=='加减乘除'&&digit1Bits==1&&digit2Bits==1)}}">
+    <view class='level1'>{{level[0]}}</view>
+  </block>
+  <block wx:elif="{{(arithmeticMode=='加减乘除'&&digit1Bits>=3&&digit2Bits>=3)||(arithmeticMode=='加减乘'&&digit1Bits>=4&&digit2Bits>=4)}}">
+    <view class='level3' >{{level[2]}}</view>
+  </block>
+  <block wx:else>
+    <view class='level2' >{{level[1]}}</view>
+  </block>
 </view>
 
 

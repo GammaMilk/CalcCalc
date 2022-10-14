@@ -3,8 +3,6 @@
   <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" ></image>
 </view>
 
-<!--这里差一个大会员闪电image，需要两张不同颜色的闪电图片,留给lyz实现-->
-
 <view>大会员限时，最高买一年赠一年，大会员任务激励1.2倍</view>
 
 <button type="primary" bindtap="handlePay">充值</button>

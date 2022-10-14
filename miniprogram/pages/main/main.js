@@ -10,12 +10,43 @@ Page({
     }
   },
 
+  // 对游客弹出一个禁止窗口 
+  sendMsgBox(){
+    wx.showToast({
+      title: '该功能暂不对游客开放，请回到首页授权后重试',
+      icon: 'none',
+      duration: 2000//持续的时间
+    })
+  },
+
   clickImg(){
     wx.navigateTo({
       url: '../settings/settings',
     })
   },
   
+  statisticTap(){
+    let uInfo=wx.getStorageSync('userInfo')
+    if(uInfo){
+      wx.navigateTo({
+        url: '../statistic/statistic',
+      })
+    }else{
+      this.sendMsgBox()
+    }
+  },
+
+  rankTap(){
+    let uInfo=wx.getStorageSync('userInfo')
+    if(uInfo){
+      wx.navigateTo({
+        url: '../rank/rank',
+      })
+    }else{
+      this.sendMsgBox()
+    }
+  },
+
   /*
     @breif: send a msgbox ask whether user provide his info and set userInfo in data
   */
@@ -24,15 +55,13 @@ Page({
     const db = wx.cloud.database()
     wx.showModal({
       title: "提示",
-      content: "获取微信昵称和头像以保存做题记录",
+      content: "获取个人信息以注册用户",
       success(res) {
         if (res.confirm) {
           wx.getUserProfile({
             desc: "用于完善用户资料", // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
             success: (res) => {
               wx.setStorageSync('userInfo', {nickName:res.userInfo.nickName,avatarUrl:res.userInfo.avatarUrl})
-              wx.setStorageSync('questionDifficulty', {op:0,
-                bit1:1,bit2:1,task:30})
               that.setData({
                 userInfo:{nickName:res.userInfo.nickName,avatarUrl:res.userInfo.avatarUrl}
               })
@@ -43,10 +72,7 @@ Page({
                   regDate:new Date(Date.parse(new Date())), //special way to get date
                   coin:6,
                   isvip:false,
-                  op:0,
-                  bit1:1,
-                  bit2:1,
-                  task:30
+                  count:0
                 },
                 success: function(res) {    
                     console.log(res)
@@ -90,8 +116,6 @@ Page({
           }else{  //若openid已存在于数据库，调出数据库的头像和昵称、setData并存到本地
             wx.setStorageSync('userInfo', {nickName:ress.data[0].nickName,
               avatarUrl:ress.data[0].avatarUrl})
-            wx.setStorageSync('questionDifficulty', {op:ress.data[0].op,
-              bit1:ress.data[0].bit1,bit2:ress.data[0].bit2,task:ress.data[0].task})
             that.setData({
               userInfo: {nickName:ress.data[0].nickName,
                 avatarUrl:ress.data[0].avatarUrl}
@@ -104,8 +128,7 @@ Page({
 
   setUserInfo(){
     var uInfo=wx.getStorageSync('userInfo')
-    var qDifficulty=wx.getStorageSync('questionDifficulty')
-    if(!uInfo||!qDifficulty) {
+    if(!uInfo) {
       this.userInit()
     }else{this.setData({
         userInfo:uInfo

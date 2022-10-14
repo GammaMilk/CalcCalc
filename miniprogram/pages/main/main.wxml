@@ -9,15 +9,13 @@
 </view>
 
 <view class="container">
-  <view class="item" style="border-color: #54BCBD;">
-  <image src="/image/statistics.png" style="width: 33%; height: 33%;"></image>
-  <navigator url="../statistic/statistic" open-type="navigate" hover-class="navigator-hover" style="height: 100%;width: 300rpx;position: absolute;"></navigator>
-  <text style="font-size: 30px;position: relative;top:10%">统计</text>
+  <view class="item" bindtap="statisticTap" style="border-color: #54BCBD;">
+    <image src="/image/statistics.png" style="width: 33%; height: 33%;"></image>
+    <text style="font-size: 30px;position: relative;top:10%">统计</text>
   </view>
-  <view class="item" style="border-color: #A16222;">
-  <image src="/image/trophy.png" style="width: 33%; height: 33%;"></image>
-  <navigator url="../rank/rank" open-type="navigate" hover-class="navigator-hover" style="height: 100%;width: 300rpx;position: absolute;" ></navigator>
-  <text style="font-size: 30px;position: relative;top:10%">排行</text>
+  <view class="item" bindtap="rankTap" style="border-color: #A16222;">
+    <image src="/image/trophy.png" style="width: 33%; height: 33%;"></image>
+    <text style="font-size: 30px;position: relative;top:10%">排行</text>
   </view>
 </view>
 

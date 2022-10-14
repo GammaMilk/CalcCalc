@@ -9,13 +9,13 @@ Page({
   },
 
   continueTap(){
-    wx.navigateTo({
+    wx.redirectTo({
       url: '../daily_task/daily_task',
     })
   },
 
   finishTap(){
-    wx.navigateTo({
+    wx.redirectTo({
       url: '../statistic/statistic',
     })
   },

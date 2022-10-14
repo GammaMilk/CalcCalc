@@ -12,11 +12,11 @@ Page({
   },
 
   getStorageUserInfo(){
-    var that = this;
     let userInfo = wx.getStorageSync("userInfo");
-    if ( userInfo.nickName != undefined && userInfo.nickName != null && userInfo.nickName != "" ) {
-        that.setData({
-          userInfo:userInfo
+    if (userInfo) {
+        this.setData({
+          userInfo:userInfo,
+          isVisitor:false
         })
         return;
     }
@@ -26,7 +26,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.getStorageUserInfo();
+    
   },
 
   /**
@@ -40,7 +40,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    this.getStorageUserInfo();
   },
 
   /**

@@ -8,6 +8,12 @@ Page({
 
   },
 
+  startTap(){
+    wx.redirectTo({
+      url: '../start/start',
+    })
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */

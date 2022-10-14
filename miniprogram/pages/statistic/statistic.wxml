@@ -1,2 +1,4 @@
 <!--pages/statistic/statistic.wxml-->
-<text>pages/statistic/statistic.wxml</text>
+<view>
+  对不起，“统计”功能暂只对大会员开放
+</view>
