@@ -114,7 +114,7 @@ Page({
         })
         //judge if finished
         if(this.data.questionArray.length==0) {
-          wx.navigateTo({
+          wx.redirectTo({
             url: '../finish/finish',
           })
         }else{

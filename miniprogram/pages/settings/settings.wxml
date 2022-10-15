@@ -7,10 +7,10 @@
   <text>{{userInfo.nickName}}</text>
 </view>
 
-<view class='container'>
-  <navigator class='item' url='../personal_info/personal_info'>个人信息</navigator>
-  <navigator class='item' url='../question_difficulty/question_difficulty'>难度设置</navigator>
-  <navigator class='item' url='../bigvip/bigvip'>大会员</navigator>
-  <navigator class='item' url='../rank/rank'>排名</navigator>
-  <navigator class='item' url='../statistic/statistic'>统计</navigator>
+<view class='container' style="position: relative; left: 0rpx; top: 111rpx">
+  <view class='item' bindtap="personalInfoTap">个人信息</view>
+  <view class='item' bindtap="difficultySettingTap">难度设置</view>
+  <view class='item' bindtap="bigVIPTap">大会员</view>
+  <view class='item' bindtap="rankTap">排名</view>
+  <view class='item' bindtap="statisticTap">统计</view>
 </view>

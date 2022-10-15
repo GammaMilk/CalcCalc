@@ -28,13 +28,3 @@
   align-items:center;
   justify-content:center;
 }
-
-.container {
-  position: relative;
-  top:110rpx;
-  width: 750rpx; 
-  height: 800rpx; 
-  display: flex; 
-  box-sizing: border-box; 
-  left: 0rpx; 
-}
