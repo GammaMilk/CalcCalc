@@ -5,14 +5,29 @@ Page({
    * 页面的初始数据
    */
   data: {
+    users:[],
+  },
 
+  getRank(){
+    const db=wx.cloud.database()
+    const _ = db.command
+    const MAX_LIMIT=10
+    let that=this
+    db.collection('userlist').orderBy("count","desc").get().then(res=>{
+      for(let i=0;i<MAX_LIMIT&&i<res.data.length;++i){
+        that.data.users.push(res.data[i])
+      }
+      that.setData({
+        users:that.data.users
+      })
+    })
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    this.getRank()
   },
 
   /**

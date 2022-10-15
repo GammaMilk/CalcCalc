@@ -16,7 +16,7 @@ Page({
 
   finishTap(){
     wx.redirectTo({
-      url: '../statistic/statistic',
+      url: '../rank/rank',
     })
   },
 

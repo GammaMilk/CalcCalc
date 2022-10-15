@@ -30,6 +30,15 @@ Page({
       mediaType: ['image'],
       sourceType: ['album'],
       success(res) {
+        //console.log(res.tempFiles[0].size)
+        if(res.tempFiles[0].size>2**20) { //大于1M时禁止上传
+          wx.showToast({
+            title: '上传图片过大，请选择小于1M的图片',
+            icon: 'none',
+            duration: 2000//持续的时间
+          })
+          return
+        }
         var photoTempPath = res.tempFiles[0].tempFilePath
         that.uploadPhotoToDatabase(photoTempPath)
       }
@@ -45,10 +54,15 @@ Page({
       filePath:photoTempPath
     })
     .then(res=>{
-      //console.log(res.fileID)
+      // console.log(res)
       wx.setStorageSync('userInfo', {nickName:nickName,avatarUrl:res.fileID})
       that.setData({
         userInfo:{nickName:nickName,avatarUrl:res.fileID}
+      })
+      wx.showToast({
+        title: '上传图片成功',
+        icon: 'none',
+        duration: 2000//持续的时间
       })
       // get user's _openid and update avatarUrl
       wx.cloud.callFunction({
@@ -86,6 +100,11 @@ Page({
         nickName:this.data.nickName,
         avatarUrl:"/image/"+(Math.random()*2+1).toFixed(0)+".jpg"
       }
+    })
+    wx.showToast({
+      title: '生成图片成功',
+      icon: 'none',
+      duration: 2000//持续的时间
     })
   },
 
@@ -144,6 +163,11 @@ Page({
                 coin:_.inc(-6)
               },success: function() {
                 console.log("success")
+                wx.showToast({
+                  title: '昵称修改成功',
+                  icon: 'none',
+                  duration: 2000//持续的时间
+                })
               }
             })
           }

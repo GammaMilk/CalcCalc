@@ -3,7 +3,7 @@
   <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" ></image>
 </view>
 
-<view>大会员限时，最高买一年赠一年，大会员任务激励1.2倍</view>
+<view>充值大会员立即获得60硬币，并解锁更多功能</view>
 
 <button type="primary" bindtap="handlePay">充值</button>
 

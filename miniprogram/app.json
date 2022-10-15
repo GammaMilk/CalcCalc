@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/main/main",
-    "pages/test/test",
     "pages/daily_task/daily_task",
     "pages/statistic/statistic",
     "pages/rank/rank",
@@ -10,6 +9,7 @@
     "pages/finish/finish",
     "pages/question_difficulty/question_difficulty",
     "pages/bigvip/bigvip",
+    "pages/handlePay/handlePay",
     "pages/settings/settings"
   ],
   "window": {
