@@ -1,30 +1,31 @@
-// pages/bigvip/bigvip.js
+// pages/handlePay/handlePay.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    userInfo:{
-      avatarUrl:"/image/"+(Math.random()*2+1).toFixed(0)+".jpg"
-    },
-    isVIP:false,
+    openId:''
   },
 
-  getStorageUserInfo(){
-    let userInfo = wx.getStorageSync("userInfo");
-    if (userInfo) {
-        this.setData({
-          userInfo:userInfo,
-          isVisitor:false
-        })
-        return;
+  getOpenidTap(){
+    let that = this
+    wx.cloud.callFunction({
+      name: 'quickstartFunctions',
+      data:{
+        type:'getOpenId'
+      },
+      success: res => {
+        wx.setClipboardData({
+          data: res.result.userInfo.openId,
+          success: function (ress) {
+              wx.showToast({
+                  title: '复制openid成功',
+                  icon:"success"
+              });
+          }
+      })
     }
-  },
- 
-  handlePay(){
-    wx.navigateTo({
-      url: '../handlePay/handlePay',
     })
   },
 
@@ -32,7 +33,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    
+
   },
 
   /**
@@ -46,7 +47,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-    this.getStorageUserInfo();
+
   },
 
   /**

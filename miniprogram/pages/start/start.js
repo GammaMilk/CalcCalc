@@ -77,7 +77,7 @@ Page({
   
   // Merky balabala a lot which make me angry when I write this method.
   clickButton: function (event) {
-    console.log(this.data)
+    //console.log(this.data)
     if (event.target.id == 'back') {  // Tap back
       if(this.data.result=='') return
       else {
@@ -114,10 +114,31 @@ Page({
         })
         //judge if finished
         if(this.data.questionArray.length==0) {
-          wx.redirectTo({
-            url: '../finish/finish',
-          })
-        }else{
+          let cnt=wx.getStorageSync('quantityOfQuestions')
+          wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
+            name: 'quickstartFunctions',
+            data:{
+              type:'getOpenId'
+            },
+            success: res => {
+              let openId=res.result.userInfo.openId
+              const db=wx.cloud.database()
+              const _ = db.command
+              db.collection('userlist').where({
+                _openid:openId
+              }).update({
+                data:{
+                  count:_.inc(cnt)
+                },success: function() {
+                  console.log("success")
+                  wx.redirectTo({
+                    url: '../finish/finish',
+                  })
+                }
+              })
+            }
+          }) 
+        }else{  // 还未完成时，继续出题
           let q=this.data.questionArray.pop()
           this.setData({  //初始化下一个题目
           operator:this.data.opArray[q[0]],

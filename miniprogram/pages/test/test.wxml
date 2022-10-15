@@ -1,9 +1,0 @@
-<!--pages/test/test.wxml-->
-<form bindsubmit='res'>
-  <view class="section">
-    <input maxlength="10" name="username" placeholder="" />
-  </view>
-  <view><button form-type='submit'>提交</button></view>
-</form>
-
-<button type='primary' bindtap="testTap">test</button>

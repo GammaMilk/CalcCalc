@@ -9,7 +9,9 @@ Page({
       nickName:"User",
       avatarUrl:"/image/"+(Math.random()*2+1).toFixed(0)+".jpg"
     },
-    isVisitor:true
+    isVisitor:true,
+    isVIP:false,
+    coin:''
   },
 
   // 对游客弹出一个禁止窗口 
@@ -71,18 +73,34 @@ Page({
       this.sendMsgBox()
     }
   },
-
-  getStorageUserInfo(){
+  
+  getStroageUserInfo(){
+    // 若为游客，则直接返回
     let userInfo = wx.getStorageSync("userInfo");
-    if (userInfo) {
-        this.setData({
-          userInfo:userInfo,
-          isVisitor:false
+    if (!userInfo)  return
+    let that=this
+    wx.cloud.callFunction({
+      name: 'quickstartFunctions',
+      data:{
+        type:'getOpenId'
+      },
+      success: res => {
+        let openId=res.result.userInfo.openId
+        const db=wx.cloud.database()
+        db.collection('userlist').where({
+          _openid:openId
+        }).get().then(ress => {
+          that.setData({
+            userInfo:userInfo,
+            isVisitor:false,
+            isVIP:ress.data[0].isvip,
+            coin:ress.data[0].coin,
+          })
         })
-        return;
-    }
+      }
+    })
   },
- 
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -101,7 +119,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-    this.getStorageUserInfo();
+    this.getStroageUserInfo()
   },
 
   /**

@@ -1,2 +1,6 @@
 <!--pages/rank/rank.wxml-->
-<text>pages/rank/rank.wxml</text>
+<view class='container'>
+  <view wx:for="{{users}}">
+    {{index+1}} {{item.nickName}} {{item.count}}
+  </view>
+</view>
