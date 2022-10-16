@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/main/main",
-    "pages/test/test",
     "pages/daily_task/daily_task",
     "pages/statistic/statistic",
     "pages/rank/rank",
@@ -10,6 +9,7 @@
     "pages/finish/finish",
     "pages/question_difficulty/question_difficulty",
     "pages/bigvip/bigvip",
+    "pages/handlePay/handlePay",
     "pages/settings/settings"
   ],
   "window": {
@@ -18,6 +18,12 @@
     "navigationBarBackgroundColor": "#F6F6F6",
     "navigationBarTitleText": "CalcCalc",
     "navigationBarTextStyle": "black"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 10000,
+    "uploadFile": 10000,
+    "downloadFile": 10000
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2"

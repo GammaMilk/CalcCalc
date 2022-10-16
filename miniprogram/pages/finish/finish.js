@@ -15,8 +15,15 @@ Page({
   },
 
   finishTap(){
+    let uInfo=wx.getStorageSync('userInfo')
+    if(!uInfo){
+      wx.redirectTo({
+        url: '../main/main',
+      })
+      return
+    }
     wx.redirectTo({
-      url: '../statistic/statistic',
+      url: '../rank/rank',
     })
   },
 

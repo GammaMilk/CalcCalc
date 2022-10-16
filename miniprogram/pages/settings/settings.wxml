@@ -1,14 +1,36 @@
 <!--pages/settings/settings.wxml-->
-<view class="imgSize"> 
-  <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" bindtap="clickImg"></image>
+<view class='userInfo'>
+  <view class='helloSize'>
+    <text>{{userInfo.nickName}}</text>
+  </view>
+  <view class='iconset'> 
+    <block wx:if="{{isVIP}}"> 
+      <image src="/image/isVIP.png" class='icon'></image>
+    </block>
+    <block wx:else> 
+      <image src="/image/notVIP.png" class='icon'></image>
+    </block>
+    <image src='/image/coin.png' class='icon' style="padding-left: 10px;"></image>
+    <text>{{coin}}</text>
+  </view>
+
+<view class='id'>  
+  <block  wx:if="{{isVisitor}}">
+    <view>游客身份</view>
+  </block>
+  <block  wx:else>
+    <view>正式会员</view>
+  </block>
 </view>
 
-<view class='helloSize'>
-  <text>{{userInfo.nickName}}</text>
+  <view class="imgSize"> 
+    <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" bindtap="clickImg"></image>
+  </view>
 </view>
 
 <view class='container' style="position: relative; left: 0rpx; top: 111rpx">
-  <view class='item' bindtap="personalInfoTap">个人信息</view>
+  <view class='item' bindtap="personalInfoTap" style="border-top-style: solid;">个人信息</view>
+  <!-- style="background-color: #E6F7FF;" -->
   <view class='item' bindtap="difficultySettingTap">难度设置</view>
   <view class='item' bindtap="bigVIPTap">大会员</view>
   <view class='item' bindtap="rankTap">排名</view>

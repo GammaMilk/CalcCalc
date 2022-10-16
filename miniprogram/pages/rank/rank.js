@@ -5,14 +5,58 @@ Page({
    * 页面的初始数据
    */
   data: {
+    users:[],
+  },
 
+  showLoading(message) {
+    if (wx.showLoading) {
+        // 基础库 1.1.0 微信6.5.6版本开始支持，低版本需做兼容处理
+        wx.showLoading({
+            title: message,
+            mask: true
+        });
+    } else {
+        // 低版本采用Toast兼容处理并将时间设为20秒以免自动消失
+        wx.showToast({
+            title: message,
+            icon: 'loading',
+            mask: true,
+            duration: 20000
+        });
+    }
+  },
+
+  hideLoading() {
+    if (wx.hideLoading) {
+        // 基础库 1.1.0 微信6.5.6版本开始支持，低版本需做兼容处理
+        wx.hideLoading();
+    } else {
+        wx.hideToast();
+    }
+  },
+
+  getRank(){
+    const db=wx.cloud.database()
+    const _ = db.command
+    const MAX_LIMIT=10
+    let that=this
+    db.collection('userlist').orderBy("count","desc").get().then(res=>{
+      for(let i=0;i<MAX_LIMIT&&i<res.data.length;++i){
+        that.data.users.push(res.data[i])
+      }
+      that.setData({
+        users:that.data.users
+      })
+      this.hideLoading()
+    })
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    this.showLoading('Loading')
+    this.getRank()
   },
 
   /**

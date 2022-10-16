@@ -9,7 +9,7 @@ Page({
       avatarUrl:"/image/"+(Math.random()*2+1).toFixed(0)+".jpg",
     }
   },
-
+  
   // 对游客弹出一个禁止窗口 
   sendMsgBox(){
     wx.showToast({
@@ -70,7 +70,7 @@ Page({
                   nickName:that.data.userInfo.nickName,
                   avatarUrl:that.data.userInfo.avatarUrl,
                   regDate:new Date(Date.parse(new Date())), //special way to get date
-                  coin:6,
+                  coin:114514,
                   isvip:false,
                   count:0
                 },
