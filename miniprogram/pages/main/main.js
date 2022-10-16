@@ -9,7 +9,7 @@ Page({
       avatarUrl:"/image/"+(Math.random()*2+1).toFixed(0)+".jpg",
     }
   },
-
+  
   // 对游客弹出一个禁止窗口 
   sendMsgBox(){
     wx.showToast({

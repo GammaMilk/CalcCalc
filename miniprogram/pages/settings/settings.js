@@ -23,6 +23,33 @@ Page({
     })
   },
 
+  showLoading(message) {
+    if (wx.showLoading) {
+        // 基础库 1.1.0 微信6.5.6版本开始支持，低版本需做兼容处理
+        wx.showLoading({
+            title: message,
+            mask: true
+        });
+    } else {
+        // 低版本采用Toast兼容处理并将时间设为20秒以免自动消失
+        wx.showToast({
+            title: message,
+            icon: 'loading',
+            mask: true,
+            duration: 20000
+        });
+    }
+  },
+
+  hideLoading() {
+    if (wx.hideLoading) {
+        // 基础库 1.1.0 微信6.5.6版本开始支持，低版本需做兼容处理
+        wx.hideLoading();
+    } else {
+        wx.hideToast();
+    }
+  },
+
   // 判断是否为游客模式，若为游客则暂时无法进入
   clickImg(){
     if(!this.data.isVisitor){
@@ -77,7 +104,10 @@ Page({
   getStroageUserInfo(){
     // 若为游客，则直接返回
     let userInfo = wx.getStorageSync("userInfo");
-    if (!userInfo)  return
+    if (!userInfo)  {
+      this.hideLoading()
+      return
+    }
     let that=this
     wx.cloud.callFunction({
       name: 'quickstartFunctions',
@@ -96,6 +126,7 @@ Page({
             isVIP:ress.data[0].isvip,
             coin:ress.data[0].coin,
           })
+          this.hideLoading()
         })
       }
     })
@@ -119,6 +150,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    this.showLoading('Loading')
     this.getStroageUserInfo()
   },
 

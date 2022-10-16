@@ -75,6 +75,24 @@ Page({
     questionArray:[],
   },
   
+  showLoading(message) {
+    if (wx.showLoading) {
+        // 基础库 1.1.0 微信6.5.6版本开始支持，低版本需做兼容处理
+        wx.showLoading({
+            title: message,
+            mask: true
+        });
+    } else {
+        // 低版本采用Toast兼容处理并将时间设为20秒以免自动消失
+        wx.showToast({
+            title: message,
+            icon: 'loading',
+            mask: true,
+            duration: 20000
+        });
+    }
+  },
+
   // Merky balabala a lot which make me angry when I write this method.
   clickButton: function (event) {
     //console.log(this.data)
@@ -107,17 +125,20 @@ Page({
         if finished, navigate to finish page
       */
       if(this.data.result==this.data.ans){
-        //update db
-        wx.showToast({
-          title: '答对了，你好棒',
-          duration: 500
-        })
         this.setData({
           count:this.data.count+1
         })
         //judge if finished
         if(this.data.questionArray.length==0) {
+          this.showLoading('Loading')
           let cnt=wx.getStorageSync('quantityOfQuestions')
+          let uInfo=wx.getStorageSync('userInfo')
+          if(!uInfo){
+            wx.redirectTo({
+              url: '../finish/finish',
+            })
+            return
+          }
           wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
             name: 'quickstartFunctions',
             data:{
@@ -164,9 +185,13 @@ Page({
       let d1=wx.getStorageSync('digit1Bits')
       let d2=wx.getStorageSync('digit2Bits')
       let l=wx.getStorageSync('arithmeticLevel')+1
-      let quantity=wx.getStorageSync("quantityOfQuestions") //quantity需判断数据库中用户今日完成的题量和用户设定题数。若用户已完成，则默认再做10题，否则做未完成题数
+      let quantity=wx.getStorageSync("quantityOfQuestions") 
       if(d1=='') {
         d1=1,d2=1,l=1,quantity=30
+        wx.setStorageSync('digit1Bits', 1)
+        wx.setStorageSync('digit2Bits', 1)
+        wx.setStorageSync('arithmeticLevel', 1)
+        wx.setStorageSync('quantityOfQuestions', 30)
       }
       if (d1&&d2&&l&&quantity) {
         let qArray=[]
