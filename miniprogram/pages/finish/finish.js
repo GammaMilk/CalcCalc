@@ -17,10 +17,8 @@ Page({
   finishTap(){
     let uInfo=wx.getStorageSync('userInfo')
     if(!uInfo){
-      wx.showToast({
-        title: '该功能暂不对游客开放，请回到首页授权后重试',
-        icon: 'none',
-        duration: 2000//持续的时间
+      wx.redirectTo({
+        url: '../main/main',
       })
       return
     }
