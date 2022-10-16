@@ -30,17 +30,31 @@ Page({
       mediaType: ['image'],
       sourceType: ['album'],
       success(res) {
-        //console.log(res.tempFiles[0].size)
-        if(res.tempFiles[0].size>2**20) { //大于1M时禁止上传
-          wx.showToast({
-            title: '上传图片过大，请选择小于1M的图片',
-            icon: 'none',
-            duration: 2000//持续的时间
-          })
-          return
-        }
+        // 压缩图片
         var photoTempPath = res.tempFiles[0].tempFilePath
-        that.uploadPhotoToDatabase(photoTempPath)
+        /**
+         * author: Merky
+         * date: 20221016 16:47
+         * brief: 减轻服务器压力 增加用户体验。
+         */
+        wx.compressImage({
+          src: photoTempPath,
+          compressedHeight :256,
+        }).then(res2=>{
+          photoTempPath = res2.tempFilePath;
+          that.uploadPhotoToDatabase(photoTempPath)
+        }).catch(e=>{
+          console.error(e)
+        })
+        //console.log(res.tempFiles[0].size)
+        // if(res.tempFiles[0].size>2**20) { //大于1M时禁止上传
+        //   wx.showToast({
+        //     title: '上传图片过大，请选择小于1M的图片',
+        //     icon: 'none',
+        //     duration: 2000//持续的时间
+        //   })
+        //   return
+        // }
       }
     })
   },
