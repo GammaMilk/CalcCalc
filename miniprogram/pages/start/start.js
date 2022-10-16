@@ -108,7 +108,10 @@ Page({
       */
       if(this.data.result==this.data.ans){
         //update db
-
+        wx.showToast({
+          title: '答对了，你好棒',
+          duration: 500
+        })
         this.setData({
           count:this.data.count+1
         })

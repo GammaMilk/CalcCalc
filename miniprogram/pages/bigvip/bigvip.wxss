@@ -1,17 +1,22 @@
 /* pages/bigvip/bigvip.wxss */
+page{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .imgSize {
   border-radius: 50%;
   overflow: hidden;
-  width: 150rpx;
-  height: 150rpx;
-  position: relative;
+  width: 300rpx;
+  height: 300rpx;
   background: yellow;
-  left: 300rpx;
-  top: 110rpx;
+  margin: 10%;
 }
 
 .imgSize image {
   border-radius: 50%;
-  width: 150rpx;
-  height: 150rpx;
+  width: 300rpx;
+  height: 300rpx;
 }

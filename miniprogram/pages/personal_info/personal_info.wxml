@@ -2,14 +2,13 @@
 <view class="imgSize"> 
   <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" ></image>
 </view>
-
 <view class='container'>
-  <view bindtap="uploadImgTap">上传本地图片</view>
-  <view bindtap="randomImgTap">自动生成头像</view>
+  <view bindtap="uploadImgTap" class="btn" style="border-color: red;">上传本地图片</view>
+  <view bindtap="randomImgTap" class="btn" style="border-color:rgb(255, 217, 0);">自动生成头像</view>
 </view>
 
 <view class='inputSize'>
-  <input placeholder='更改用户名(需6硬币)' maxlength="10" bindinput="bindKeyInput"></input>
+  <input placeholder='更改用户名(需要6个硬币)' maxlength="10" bindinput="bindKeyInput"></input>
   <view bindtap="submitTap">提交</view>
 </view>
 

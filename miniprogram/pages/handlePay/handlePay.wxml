@@ -1,20 +1,30 @@
 <!--pages/handlePay/handlePay.wxml-->
-<view>
-  <text>月度大会员 8.88\n</text>
-  <text>年度大会员 88.8\n</text>
-  <text>充值解锁统计功能，可随时检测做题情况\n</text>
-  <text>充值月度大会员加赠60硬币\n</text>
-  <text>年度大会员加赠6000硬币\n</text>
-  <text>付款后添加客服发送openid以获取大会员权限</text>
+
+<view class='iconset'>
+  <view class='card'>
+  月度大会员
+    <text class='yuan'>￥8.88</text>
+    <text>+60硬币(免费)</text>
+  </view>
+  <view class='card'>
+    年度大会员
+    <text class='yuan'>￥88.8</text>
+    <text>+6000硬币(免费)</text>
+  </view>
+</view>
+  
+<text style="text-align: center;color:magenta;font-size: larger;">大会员专属福利：\n解锁统计功能，可随时检测做题情况\n</text>
+
+
+
+<view class='imageset'>
+  <image src='cloud://cloud1-4g86myxu7e413a6c.636c-cloud1-4g86myxu7e413a6c-1314056347/picture/wxQRCode.jpg' class='illegal'></image>
+  <image src='cloud://cloud1-4g86myxu7e413a6c.636c-cloud1-4g86myxu7e413a6c-1314056347/picture/payQRCode.jpg' class='illegal'></image>
 </view>
 
-<view>
-  <image src='cloud://cloud1-4g86myxu7e413a6c.636c-cloud1-4g86myxu7e413a6c-1314056347/picture/wxQRCode.jpg'></image>
-  <image src='cloud://cloud1-4g86myxu7e413a6c.636c-cloud1-4g86myxu7e413a6c-1314056347/picture/payQRCode.jpg'></image>
-</view>
-
-<view>
-  <button type="primary" bindtap="getOpenidTap">一键复制openid</button>
+<view> 
+  <text style="color: gray;font-size: small;">付款后添加客服发送openid以获取大会员权限</text>
+  <button type="primary" bindtap="getOpenidTap" style="margin-bottom: 30%;">一键复制openid</button>
   <view>{{openId}}</view>
 </view>
 

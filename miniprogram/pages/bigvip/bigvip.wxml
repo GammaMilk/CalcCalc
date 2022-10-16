@@ -3,9 +3,9 @@
   <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" ></image>
 </view>
 
-<view>充值大会员立即获得60硬币，并解锁更多功能</view>
+<view style="color: gray;font-size: small;">解锁大会员可立得60枚硬币，并解锁更多功能</view>
 
-<button type="primary" bindtap="handlePay">充值</button>
+<button type="primary" bindtap="handlePay">V我50</button>
 
 
 

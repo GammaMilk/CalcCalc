@@ -70,7 +70,7 @@ Page({
                   nickName:that.data.userInfo.nickName,
                   avatarUrl:that.data.userInfo.avatarUrl,
                   regDate:new Date(Date.parse(new Date())), //special way to get date
-                  coin:6,
+                  coin:114514,
                   isvip:false,
                   count:0
                 },
