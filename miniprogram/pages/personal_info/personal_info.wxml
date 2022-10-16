@@ -9,6 +9,6 @@
 
 <view class='inputSize'>
   <input placeholder='更改用户名(需要6个硬币)' maxlength="10" bindinput="bindKeyInput"></input>
-  <view bindtap="submitTap">提交</view>
+  <button type="default" bindtap="submitTap">提交</button>
 </view>
 
