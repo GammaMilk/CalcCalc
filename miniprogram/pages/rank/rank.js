@@ -6,6 +6,7 @@ Page({
    */
   data: {
     users:[],
+    me:'',
     //indexOfUser:0
   },
 
@@ -43,7 +44,27 @@ Page({
     let that=this
     //let nickName=wx.getStorageSync("userInfo").nickName
     //console.log(nickName)
-    db.collection('userlist').orderBy("count","desc").get().then(res=>{
+
+    // Here select user's self data
+    // first get OPENID
+    // TODO: 
+    // wx.cloud.callFunction({
+    //   name: 'quickstartFunctions',
+    //   data:{
+    //     type:'getOpenId'
+    //   },
+    // }).then(res=>{
+    //   let openId=res.result.userInfo.openId
+    //   return db.collection('userlist').where({'_openid':openId}).get()
+    // }).then(res=>{
+    //   that.setData({
+    //     me:
+    //   })
+    // })
+
+
+    // Here select first 10 users;
+    db.collection('userlist').orderBy("count","desc").limit(MAX_LIMIT).get().then(res=>{
       for(let i=0;i<MAX_LIMIT&&i<res.data.length;++i){
         //if(res.data[i].nickName==nickName) {indexOfUser=i
         //console.log(indexOfUser)}

@@ -1,6 +1,6 @@
 <!--pages/settings/settings.wxml-->
 <view class='userInfo'>
-  <view class='helloSize'>
+  <view class='helloSize' bindtap="clickImg">
     <text>{{userInfo.nickName}}</text>
   </view>
   <view class='iconset'> 
