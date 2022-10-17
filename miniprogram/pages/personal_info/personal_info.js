@@ -66,7 +66,7 @@ Page({
       })
       wx.showToast({
         title: '上传图片成功',
-        icon: 'none',
+        icon: 'success',
         duration: 2000//持续的时间
       })
       // get user's _openid and update avatarUrl
@@ -90,7 +90,14 @@ Page({
           })
         }
     })
-  })
+    }).catch(err=>{
+      console.error(err)
+      wx.showToast({
+        title: '上传图片失败',
+        icon: 'error',
+        duration: 1500,
+      })
+    })
 },
 
   uploadImgTap(){
