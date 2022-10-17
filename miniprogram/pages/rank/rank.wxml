@@ -4,3 +4,5 @@
     {{index+1}} {{item.nickName}} {{item.count}}
   </view>
 </view>
+<!-- @lao-ye-zi optimize here!!!!!! -->
+<text> 我的排名： {{me}}</text>
