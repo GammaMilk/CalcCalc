@@ -6,6 +6,7 @@ Page({
    */
   data: {
     users:[],
+    //indexOfUser:0
   },
 
   showLoading(message) {
@@ -40,8 +41,12 @@ Page({
     const _ = db.command
     const MAX_LIMIT=10
     let that=this
+    //let nickName=wx.getStorageSync("userInfo").nickName
+    //console.log(nickName)
     db.collection('userlist').orderBy("count","desc").get().then(res=>{
       for(let i=0;i<MAX_LIMIT&&i<res.data.length;++i){
+        //if(res.data[i].nickName==nickName) {indexOfUser=i
+        //console.log(indexOfUser)}
         that.data.users.push(res.data[i])
       }
       that.setData({

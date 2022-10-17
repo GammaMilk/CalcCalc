@@ -51,6 +51,6 @@ page {
 }
 
 .question{
-  width: 33%;
+  font-size: 2rem;
 }
 

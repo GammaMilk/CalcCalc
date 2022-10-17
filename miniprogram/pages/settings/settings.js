@@ -11,7 +11,7 @@ Page({
     },
     isVisitor:true,
     isVIP:false,
-    coin:''
+    coin:'0'
   },
 
   // 对游客弹出一个禁止窗口 
