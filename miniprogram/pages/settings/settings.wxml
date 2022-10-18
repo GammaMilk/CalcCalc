@@ -1,16 +1,16 @@
 <!--pages/settings/settings.wxml-->
 <view class='userInfo'>
-  <view class='helloSize'>
+  <view class='helloSize' bindtap="clickImg">
     <text>{{userInfo.nickName}}</text>
   </view>
   <view class='iconset'> 
     <block wx:if="{{isVIP}}"> 
-      <image src="/image/isVIP.png" class='icon'></image>
+      <image src="/image/isVIP.png" class='icon' mode="heightFix"></image>
     </block>
     <block wx:else> 
-      <image src="/image/notVIP.png" class='icon'></image>
+      <image src="/image/notVIP.png" class='icon' mode="heightFix"></image>
     </block>
-    <image src='/image/coin.png' class='icon' style="padding-left: 10px;"></image>
+    <image src='/image/coin.png' class='icon' style="padding-left: 10px;" mode="heightFix"></image>
     <text>{{coin}}</text>
   </view>
 

@@ -11,7 +11,7 @@ Page({
     },
     isVisitor:true,
     isVIP:false,
-    coin:''
+    coin:'0'
   },
 
   // 对游客弹出一个禁止窗口 
@@ -115,7 +115,7 @@ Page({
         type:'getOpenId'
       },
       success: res => {
-        let openId=res.result.userInfo.openId
+        let openId=res.result.openid
         const db=wx.cloud.database()
         db.collection('userlist').where({
           _openid:openId

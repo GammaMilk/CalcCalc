@@ -145,7 +145,7 @@ Page({
               type:'getOpenId'
             },
             success: res => {
-              let openId=res.result.userInfo.openId
+              let openId=res.result.openid
               const db=wx.cloud.database()
               const _ = db.command
               db.collection('userlist').where({

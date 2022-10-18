@@ -1,5 +1,5 @@
 <!--pages/start/start.wxml-->
-<view style="font-size: 80rpx;font-weight: bold;color: b;">第{{count+1}}题</view>
+<view style="font-size: 40rpx;position: relative; left: 40%;">第{{count+1}}题</view>
 
 <view class='screen'>
   <view class='question' style="text-align: end;">{{num1}}</view>

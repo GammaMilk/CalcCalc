@@ -19,6 +19,7 @@
   width: 200rpx;
   height: 200rpx;
   position: absolute;
+  top: 35px;
   left: 65%;
   background: yellow;
 }
@@ -37,7 +38,6 @@
 }
 
 .icon{
-  width: 30px;
   height: 30px;
 }
 .id{
@@ -47,6 +47,8 @@
   border-color: magenta;
   color: magenta;
   font-size: 25rpx;
+  position: relative;
+  top: 10px;
 }
 
 .container{

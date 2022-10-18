@@ -31,7 +31,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    wx.cloud.callFunction({
+      name:'quickstartFunctions',
+      data:{
+        type:'updateTask',
+        count:wx.getStorageSync('quantityOfQuestions')
+      }
+    }).catch(err=>{
+      console.error(err);
+    })
   },
 
   /**

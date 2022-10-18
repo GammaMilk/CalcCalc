@@ -6,6 +6,8 @@ Page({
    */
   data: {
     users:[],
+    me:-1,
+    //indexOfUser:0
   },
 
   showLoading(message) {
@@ -38,10 +40,44 @@ Page({
   getRank(){
     const db=wx.cloud.database()
     const _ = db.command
+    const $ = db.command.aggregate
     const MAX_LIMIT=10
     let that=this
-    db.collection('userlist').orderBy("count","desc").get().then(res=>{
+    //let nickName=wx.getStorageSync("userInfo").nickName
+    //console.log(nickName)
+
+    // Here select user's self data
+    // first get OPENID
+    wx.cloud.callFunction({
+      name: 'quickstartFunctions',
+      data:{
+        type:'getOpenId'
+      },
+      // then get rank
+    }).then(res=>{
+      let openId=res.result.openid
+      return db.collection('userlist').aggregate().sort({"count":-1}).group({_id:null,all:$.push("$_openid")}).project({
+        _id:0,
+        rank:$.indexOfArray(['$all',openId])
+      }).end()
+    }).then(res=>{
+      console.log("排名:")
+      let rank = res.list[0].rank - (-1)
+      console.log(rank)
+      that.setData({
+        me:rank
+      })
+    }).catch(e=>{
+      console.error(e)
+    })
+
+
+    // Here select first 10 users;
+    // '.limit' was added by merky
+    db.collection('userlist').orderBy("count","desc").limit(MAX_LIMIT).get().then(res=>{
       for(let i=0;i<MAX_LIMIT&&i<res.data.length;++i){
+        //if(res.data[i].nickName==nickName) {indexOfUser=i
+        //console.log(indexOfUser)}
         that.data.users.push(res.data[i])
       }
       that.setData({

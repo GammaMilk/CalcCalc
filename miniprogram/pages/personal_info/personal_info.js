@@ -30,18 +30,23 @@ Page({
       mediaType: ['image'],
       sourceType: ['album'],
       success(res) {
-        //console.log(res.tempFiles[0].size)
-        if(res.tempFiles[0].size>2**20) { //大于1M时禁止上传
-          wx.showToast({
-            title: '上传图片过大，请选择小于1M的图片',
-            icon: 'none',
-            duration: 2000//持续的时间
-          })
-          return
-        }
+        // 裁剪
         var photoTempPath = res.tempFiles[0].tempFilePath
-        that.uploadPhotoToDatabase(photoTempPath)
+        wx.navigateTo({
+          url: '../cropimg/cropimg?filepath='+encodeURIComponent(photoTempPath),
+        })
       }
+    })
+  },
+  compressAndUpload(){
+    let that = this;
+    wx.compressImage({
+      src: wx.getStorageSync('uploadurl'),
+      compressedHeight :256,
+    }).then(res2=>{
+      that.uploadPhotoToDatabase(res2.tempFilePath);
+    }).catch(e=>{
+      console.error(e)
     })
   },
 
@@ -61,7 +66,7 @@ Page({
       })
       wx.showToast({
         title: '上传图片成功',
-        icon: 'none',
+        icon: 'success',
         duration: 2000//持续的时间
       })
       // get user's _openid and update avatarUrl
@@ -71,7 +76,7 @@ Page({
           type:'getOpenId'
         },
         success: ress => {
-          let openId=ress.result.userInfo.openId
+          let openId=ress.result.openid
           const db=wx.cloud.database()
           db.collection('userlist').where({
             _openid:openId
@@ -85,7 +90,14 @@ Page({
           })
         }
     })
-  })
+    }).catch(err=>{
+      console.error(err)
+      wx.showToast({
+        title: '上传图片失败',
+        icon: 'error',
+        duration: 1500,
+      })
+    })
 },
 
   uploadImgTap(){
@@ -133,7 +145,7 @@ Page({
         type:'getOpenId'
       },
       success: res => {
-        let openId=res.result.userInfo.openId
+        let openId=res.result.openid
         const db=wx.cloud.database()
         const _ = db.command
         db.collection('userlist').where({
