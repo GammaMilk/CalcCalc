@@ -7,8 +7,25 @@ page {
   flex-direction: column;
   justify-content: space-between;
 }
- 
 
+.icon{
+  width: 30px;
+  height: 30px;
+}
+
+.iconSet{
+  display: flex;
+  flex-direction: row;
+  font-size: 40rpx;
+  align-items: center;
+}
+ 
+.testStatus{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
  
 .screen {
   color: #000000;

@@ -1,14 +1,23 @@
 <!--pages/start/start.wxml-->
-<view style="font-size: 40rpx;position: relative; left: 40%;">第{{count+1}}题</view>
+<view class='testStatus'>
+  <view class='iconSet'>
+    <image src='/image/time.png' class='icon'></image>
+    <view>{{minute}}:{{second}}</view>
+  </view>
+  <view class='iconSet'>
+    <view>第{{count+1}}题</view>
+    <image src='/image/question.png' class='icon'></image>
+  </view>
+</view>
+
 
 <view class='screen'>
   <view class='question' style="text-align: end;">{{num1}}</view>
   <view>{{operator}}</view>
   <view class='question'>{{num2}}</view>
-</view>
+  </view>
 
 <view class='answer'>= {{result}}</view>
-
 <view class='test-bg'>
   <view class='btnGroup'>
     <view class='item' bindtap='clickButton' id="{{id7}}">7</view>
