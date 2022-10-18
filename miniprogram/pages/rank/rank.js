@@ -55,7 +55,7 @@ Page({
       },
       // then get rank
     }).then(res=>{
-      let openId=res.result.userInfo.openId
+      let openId=res.result.openid
       return db.collection('userlist').aggregate().sort({"count":-1}).group({_id:null,all:$.push("$_openid")}).project({
         _id:0,
         rank:$.indexOfArray(['$all',openId])

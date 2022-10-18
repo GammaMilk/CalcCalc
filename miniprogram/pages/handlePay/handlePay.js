@@ -17,7 +17,7 @@ Page({
       },
       success: res => {
         wx.setClipboardData({
-          data: res.result.userInfo.openId,
+          data: res.result.openid,
           success: function (ress) {
               wx.showToast({
                   title: '复制openid成功',

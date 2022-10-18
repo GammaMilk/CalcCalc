@@ -5,7 +5,13 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    x1:0,
+    x2:0,
+    x3:0,
+    x4:0,
+    x5:0,
+    x6:0,
+    x7:0,
   },
   torankTap(){
     wx.redirectTo({
@@ -16,7 +22,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    const that = this;
+    wx.cloud.callFunction({
+      name:'quickstartFunctions',
+      data:{
+        type:'getTask'
+      }
+    }).then(r=>{
+      that.setData({
+        x1:r.result.x1,
+        x2:r.result.x2,
+        x3:r.result.x3,
+        x4:r.result.x4,
+        x5:r.result.x5,
+        x6:r.result.x6,
+        x7:r.result.x7,
+      })
+      console.log(r)
+    }).catch(err=>{
+      console.error(err)
+    })
   },
 
   /**

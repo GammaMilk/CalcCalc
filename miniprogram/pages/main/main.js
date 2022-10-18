@@ -65,12 +65,19 @@ Page({
               that.setData({
                 userInfo:{nickName:res.userInfo.nickName,avatarUrl:res.userInfo.avatarUrl}
               })
+              // 建立做题数据库 20221018
+              wx.cloud.callFunction({
+                name:'quickstartFunctions',
+                data:{
+                  type:'createTask',
+                }
+              });
               db.collection('userlist').add({
                 data:{  //_openid会自动设置
                   nickName:that.data.userInfo.nickName,
                   avatarUrl:that.data.userInfo.avatarUrl,
                   regDate:new Date(Date.parse(new Date())), //special way to get date
-                  coin:114514,
+                  coin:12,
                   isvip:false,
                   count:0
                 },
@@ -105,7 +112,7 @@ Page({
       },
       success: res => {
         // 判断openid是否存在于数据库
-        let openId=res.result.userInfo.openId
+        let openId=res.result.openid
         const db=wx.cloud.database()
         db.collection('userlist').where({
           _openid:openId
