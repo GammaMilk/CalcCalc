@@ -1,5 +1,6 @@
 {
   "pages": [
+    
     "pages/main/main",
     "pages/daily_task/daily_task",
     "pages/statistic/statistic",
