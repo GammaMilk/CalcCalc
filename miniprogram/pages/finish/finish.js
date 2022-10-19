@@ -5,7 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    count:0,
+    second:0
   },
 
   continueTap(){
@@ -31,6 +32,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    console.log(options)
+    this.setData({
+      count:options.count,
+      second:options.seconds
+    })
     wx.cloud.callFunction({
       name:'quickstartFunctions',
       data:{

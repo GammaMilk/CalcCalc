@@ -1,4 +1,4 @@
-// pages/start/start.js
+// pages/pvp/pvp.js
 /**
  * @brief generate a problem from user's selected digs and level
  * @param d1: int, number of digits of num1
@@ -51,10 +51,12 @@ var aProblem = function(d1,d2,l){
   return [op, num1, num2, ans];
 }
 
-var timerID;
+var timerID = -1;
 var minute = 0;
 var second = 0;
-var animation;
+
+var roomid=-1;
+var p='p';
 Page({
   data: {
     C: 'C',
@@ -79,7 +81,8 @@ Page({
     minute:0,
     second:0,
     questionArray:[],
-    animation:wx.createAnimation()
+    anotherCount:0,
+    rival:'对手'
   },
   
   showLoading(message) {
@@ -133,9 +136,19 @@ Page({
         if finished, navigate to finish page
       */
       if(this.data.result==this.data.ans){
+        // 答对了！
         this.setData({
           count:this.data.count+1
         })
+        //TODO: 上传数据到数据库
+        wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
+          name: 'quickstartFunctions',
+          data:{
+            type:'matchMgr',
+            matchOption:'add',
+            roomid:roomid,
+            p:p
+          }});
         //judge if finished
         if(this.data.questionArray.length==0) {
           this.stop();
@@ -173,8 +186,6 @@ Page({
             }
           }) 
         }else{  // 还未完成时，继续出题
-          this.animation.translate(0,10).step().translate(0).step()
-          this.setData({animation: this.animation.export()})
           let q=this.data.questionArray.pop()
           this.setData({  //初始化下一个题目
           operator:this.data.opArray[q[0]],
@@ -188,41 +199,129 @@ Page({
       }
     }
   },
-
+  updateRival:function(){
+    // 看看另一位玩家是谁
+    wx.cloud.callFunction({
+      name:'quickstartFunctions',
+      data:{type:'matchMgr',
+        matchOption:'another',
+        p:p,
+        roomid:roomid
+    }}).then(res=>{
+      console.log(res.result)
+      this.setData({rival:res.result})
+    })
+  },
+  snapShotHandler:function (snapshot) {
+    const that = this;
+    if (snapshot.docs[0].stat=='updating') {
+      // 正在更新数据
+      const res = snapshot.docs[0].result;
+      // update anotherCount
+      var an=0;
+      if (p=='p1') {an = res.p2count;}
+      else {an = res.p1count;}
+      that.setData({anotherCount : an});
+    }
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    const that = this;
+    const db = wx.cloud.database();
+    // 等人匹配
+    wx.showLoading({
+      title: '正在等待匹配',
+    })
+    wx.cloud.callFunction({
+      name:'quickstartFunctions',
+      data:{type:'matchMgr',
+        matchOption:'new'  
+    }}).then(res=>{
+      if (res.result.error != '') {
+        console.error('Cloud Function ERROR', res.result.error)
+        wx.hideLoading({
+          success: (res) => {wx.showToast({
+            title: '错误！',
+            icon: 'error'
+          })},
+        })
+        
+      }
+      p = res.result.p;
+      roomid=res.result.roomid;
+      if (roomid == undefined) roomid = -1;
+      wx.hideLoading({
+        success: (res) => {
+          if (p=='p2') {
+            wx.showToast({
+              title: '请开始作答',
+              duration: 600,
+              icon: 'success'
+            })
+          } else {
+            wx.showLoading({
+              title: '已进入匹配队列',
+          })}}})
+      // p2时直接开始作答
+      if (p == 'p2') {
+        this.start();
+        let closer = db.collection('vslist').where({roomid:roomid}).watch({
+          onChange: function(snapshot) {
+            that.snapShotHandler(snapshot);
+          },
+          onError: function(err) {
+            console.error('the watch closed because of error', err)
+          }
+        })
+        that.updateRival();
+      } else {
+        // p1 等待其他人
+        // 别忘了取消Loading弹窗
+        const db=wx.cloud.database();
+        const _ = db.command;
+        console.log('watching ',roomid);
+        let closer = db.collection('vslist').where({roomid:roomid}).watch({
+          onChange: function(snapshot) {
+            console.log('snapshot.docs: ' ,snapshot.docs)
+            if (snapshot.docs[0].stat=='doing') {
+              // 另一位玩家已经匹配到这里。
+              // 开始作答
+              that.start()
+              wx.hideLoading({
+                success: (res) => {},
+              })
+              that.updateRival();
+            } else that.snapShotHandler(snapshot);
+          },
+          onError: function(err) {
+            console.error('the watch closed because of error', err)
+          }
+        })
+      }
+    })
     try {
-      let d1=wx.getStorageSync('digit1Bits')
-      let d2=wx.getStorageSync('digit2Bits')
-      let l=wx.getStorageSync('arithmeticLevel')+1
-      let quantity=wx.getStorageSync("quantityOfQuestions") 
-      if(d1=='') {
-        d1=1,d2=1,l=1,quantity=30
-        wx.setStorageSync('digit1Bits', 1)
-        wx.setStorageSync('digit2Bits', 1)
-        wx.setStorageSync('arithmeticLevel', 1)
-        wx.setStorageSync('quantityOfQuestions', 30)
+      let d1=2
+      let d2=2
+      let l=2
+      let quantity=20
+      let qArray=[]
+      while(quantity--){
+        qArray.push(aProblem(d1,d2,l))
       }
-      if (d1&&d2&&l&&quantity) {
-        let qArray=[]
-        while(quantity--){
-          qArray.push(aProblem(d1,d2,l))
-        }
-        this.setData({
-          questionArray:qArray
-        })
-        console.log(this.data.questionArray)
-        let q=this.data.questionArray.pop()
-        this.setData({  //初始化第一个题目
-          operator:this.data.opArray[q[0]],
-          num1:q[1],
-          num2:q[2],
-          ans:q[3],
-          questionArray:this.data.questionArray
-        })
-      }
+      this.setData({
+        questionArray:qArray
+      })
+      console.log(this.data.questionArray)
+      let q=this.data.questionArray.pop()
+      this.setData({  //初始化第一个题目
+        operator:this.data.opArray[q[0]],
+        num1:q[1],
+        num2:q[2],
+        ans:q[3],
+        questionArray:this.data.questionArray
+      })
     } catch (error) {
       console.log(error)
     }
@@ -232,26 +331,31 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady() {
-    this.animation = wx.createAnimation({
-      duration:100
-    })
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow() {
-    this.start()
+    // this.start()
   },
   
   start: function() { //开始计时函数
     var that = this;
+    if (timerID!=-1) {
+      that.stop();
+      second=0;
+      minute=0;
+    }
     timerID = setInterval(() => {
       that.timer()
     }, 1000) //每隔1s调用一次timer函数
   },
 
   stop: function() { //停止计时函数
+    console.log("stop called")
+    second=0;
+    minute=0;
     clearInterval(timerID) //清除计时器
   },
 
@@ -307,5 +411,5 @@ Page({
    */
   onShareAppMessage() {
 
-  }
+  },
 })

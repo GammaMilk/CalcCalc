@@ -1,12 +1,12 @@
 <!--pages/start/start.wxml-->
 <view class='testStatus'>
   <view class='iconSet'>
-    <image src='/image/time.png' class='icon'></image>
+    <image src='/image/time.png' class='icon' mode="heightFix"></image>
     <view>{{minute}}:{{second}}</view>
   </view>
   <view class='iconSet'>
-    <view>第{{count+1}}题</view>
-    <image src='/image/question.png' class='icon'></image>
+    <view>{{count+1}} / {{questionArray.length + count + 1}}</view>
+    <image src='/image/question.png' class='icon' mode="heightFix"></image>
   </view>
 </view>
 

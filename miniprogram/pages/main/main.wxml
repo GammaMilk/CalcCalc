@@ -1,7 +1,7 @@
 <!--pages/main/main.wxml-->
-<view class='helloUser'>
+<view class='helloUser' bindtap="hiddenFunc">
   <view class='helloSize'>
-    <text>Hi,\n{{userInfo.nickName}}!</text>
+    <text >Hi,\n{{userInfo.nickName}}!</text>
   </view>
   <view class="imgSize"> 
     <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" bindtap="clickImg"></image>

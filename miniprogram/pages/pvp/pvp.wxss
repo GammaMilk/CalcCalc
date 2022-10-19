@@ -1,4 +1,4 @@
-/* pages/start/start.wxss */
+/* pages/pvp/pvp.wxss */
 page {
   width: 100%;
   height: 100%;
@@ -75,6 +75,3 @@ page {
   font-size: 2rem;
 }
 
-.hover{
-  background: linear-gradient(145deg, rgba(221,214,214, .6), rgba(235,228,228, .7));
-}
