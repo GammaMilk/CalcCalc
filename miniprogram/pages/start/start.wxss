@@ -71,3 +71,6 @@ page {
   font-size: 2rem;
 }
 
+.hover{
+  background: linear-gradient(145deg, rgba(221,214,214, .6), rgba(235,228,228, .7));
+}
