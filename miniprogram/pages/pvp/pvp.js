@@ -167,6 +167,7 @@ Page({
             name: 'quickstartFunctions',
             data:{
               type:'matchMgr',
+              matchOption:'end',
               p:p,
               roomid:roomid,
               time:(that.data.second - (-60*that.data.minute))
