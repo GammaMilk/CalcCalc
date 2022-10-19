@@ -81,7 +81,8 @@ Page({
     minute:0,
     second:0,
     questionArray:[],
-    anotherCount:0
+    anotherCount:0,
+    rival:'对手'
   },
   
   showLoading(message) {
@@ -198,12 +199,37 @@ Page({
       }
     }
   },
-
+  updateRival:function(){
+    // 看看另一位玩家是谁
+    wx.cloud.callFunction({
+      name:'quickstartFunctions',
+      data:{type:'matchMgr',
+        matchOption:'another',
+        p:p,
+        roomid:roomid
+    }}).then(res=>{
+      console.log(res.result)
+      this.setData({rival:res.result})
+    })
+  },
+  snapShotHandler:function (snapshot) {
+    const that = this;
+    if (snapshot.docs[0].stat=='updating') {
+      // 正在更新数据
+      const res = snapshot.docs[0].result;
+      // update anotherCount
+      var an=0;
+      if (p=='p1') {an = res.p2count;}
+      else {an = res.p1count;}
+      that.setData({anotherCount : an});
+    }
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
     const that = this;
+    const db = wx.cloud.database();
     // 等人匹配
     wx.showLoading({
       title: '正在等待匹配',
@@ -213,9 +239,19 @@ Page({
       data:{type:'matchMgr',
         matchOption:'new'  
     }}).then(res=>{
-      console.log(res);
+      if (res.result.error != '') {
+        console.error('Cloud Function ERROR', res.result.error)
+        wx.hideLoading({
+          success: (res) => {wx.showToast({
+            title: '错误！',
+            icon: 'error'
+          })},
+        })
+        
+      }
       p = res.result.p;
       roomid=res.result.roomid;
+      if (roomid == undefined) roomid = -1;
       wx.hideLoading({
         success: (res) => {
           if (p=='p2') {
@@ -231,6 +267,15 @@ Page({
       // p2时直接开始作答
       if (p == 'p2') {
         this.start();
+        let closer = db.collection('vslist').where({roomid:roomid}).watch({
+          onChange: function(snapshot) {
+            that.snapShotHandler(snapshot);
+          },
+          onError: function(err) {
+            console.error('the watch closed because of error', err)
+          }
+        })
+        that.updateRival();
       } else {
         // p1 等待其他人
         // 别忘了取消Loading弹窗
@@ -242,29 +287,13 @@ Page({
             console.log('snapshot.docs: ' ,snapshot.docs)
             if (snapshot.docs[0].stat=='doing') {
               // 另一位玩家已经匹配到这里。
+              // 开始作答
               that.start()
               wx.hideLoading({
                 success: (res) => {},
               })
-              // 看看另一位玩家是谁
-              wx.cloud.callFunction({
-                name:'quickstartFunctions',
-                data:{type:'matchMgr',
-                  matchOption:'another',
-                  p:p,
-                  roomid:roomid
-              }}).then(res=>{
-                console.log(res)
-              })
-            } else if (snapshot.docs[0].stat=='updating') {
-              // 正在更新数据
-              const res = snapshot.docs[0].result;
-              // update anotherCount
-              var an=0;
-              if (p=='p1') {an = res.p2count;}
-              else {an = res.p1count;}
-              that.setData({anotherCount : an});
-            }
+              that.updateRival();
+            } else that.snapShotHandler(snapshot);
           },
           onError: function(err) {
             console.error('the watch closed because of error', err)

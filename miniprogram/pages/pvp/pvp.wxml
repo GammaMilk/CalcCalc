@@ -5,7 +5,7 @@
     <view>{{minute}}:{{second}}</view>
   </view>
   <view class='iconSet'>
-    <view>对手：{{anotherCount+1}} 自己：{{count+1}} / {{questionArray.length + count + 1}}</view>
+    <view>{{rival}}：{{anotherCount+1}} 自己：{{count+1}} / {{questionArray.length + count + 1}}</view>
     <image src='/image/question.png' class='icon' mode="heightFix"></image>
   </view>
 </view>
