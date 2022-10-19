@@ -1,0 +1,77 @@
+/* pages/pvp/pvp.wxss */
+page {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.icon{
+  height: 25px;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.iconSet{
+  display: flex;
+  flex-direction: row;
+  font-size: 40rpx;
+  align-items: center;
+}
+ 
+.testStatus{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+ 
+.screen {
+  color: #000000;
+  font-size: 30px;
+  width: 100%;
+  word-wrap: break-word;
+  display: flex; /*弹性显示结构*/
+  flex-direction: row;/*横向显示*/
+  justify-content: center;
+}
+ 
+.answer{
+  color: #000000;
+  font-size: 30px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.test-bg{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.btnGroup {
+  display: flex; /*弹性显示结构*/
+  flex-direction: row;/*横向显示*/
+  width: 100%;
+  height: 24%;
+  justify-content: space-around;
+}
+
+.item {
+  width: 30%;
+  line-height: 180rpx;
+  border-radius: 5%;
+  border-style: solid;
+  border-color: #666666;
+  text-align: center;
+  font-size: 1.8em;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+.question{
+  font-size: 2rem;
+}
+

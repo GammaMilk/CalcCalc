@@ -142,7 +142,14 @@ Page({
       })
     }
   },
-
+  hiddenFunc() {
+    console.log("Test func. ")
+    wx.navigateTo({
+      url: '../pvp/pvp',
+    }).catch(err=>{
+      console.error(err)
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
