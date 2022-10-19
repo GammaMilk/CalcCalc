@@ -51,7 +51,7 @@ var aProblem = function(d1,d2,l){
   return [op, num1, num2, ans];
 }
 
-var timerID;
+var timerID = 0;
 var minute = 0;
 var second = 0;
 var animation;
@@ -139,7 +139,7 @@ Page({
         //judge if finished
         if(this.data.questionArray.length==0) {
           this.stop();
-          this.showLoading('Loading')
+          this.showLoading('正在完成')
           let cnt=wx.getStorageSync('quantityOfQuestions')
           let uInfo=wx.getStorageSync('userInfo')
           let rediURL = '../finish/finish?seconds='+(that.data.second - (-60*that.data.minute))+'&count='+that.data.count;
@@ -173,17 +173,21 @@ Page({
             }
           }) 
         }else{  // 还未完成时，继续出题
-          this.animation.translate(0,10).step().translate(0).step()
-          this.setData({animation: this.animation.export()})
+          setTimeout(() => {
+            this.animation.translate(0,5).step().translate(0).step()
+            this.setData({animation: this.animation.export()})
+          }, 30);
           let q=this.data.questionArray.pop()
-          this.setData({  //初始化下一个题目
-          operator:this.data.opArray[q[0]],
-          num1:q[1],
-          num2:q[2],
-          ans:q[3],
-          result:'',
-          questionArray:this.data.questionArray
-      })
+          setTimeout(() => {
+            this.setData({  //初始化下一个题目
+              operator:this.data.opArray[q[0]],
+              num1:q[1],
+              num2:q[2],
+              ans:q[3],
+              result:'',
+              questionArray:this.data.questionArray
+            })
+          }, 150);
         }
       }
     }
@@ -246,6 +250,10 @@ Page({
   
   start: function() { //开始计时函数
     var that = this;
+    if (timerID != 0) {
+      // 清零上一个timer
+      this.stop();
+    }
     timerID = setInterval(() => {
       that.timer()
     }, 1000) //每隔1s调用一次timer函数
@@ -253,6 +261,9 @@ Page({
 
   stop: function() { //停止计时函数
     clearInterval(timerID) //清除计时器
+    timerID=0;
+    minute=0;
+    second=0;
   },
 
   timer: function() { //计时函数
