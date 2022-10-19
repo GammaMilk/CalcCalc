@@ -54,7 +54,7 @@ var aProblem = function(d1,d2,l){
 var timerID;
 var minute = 0;
 var second = 0;
-
+var animation;
 Page({
   data: {
     C: 'C',
@@ -79,6 +79,7 @@ Page({
     minute:0,
     second:0,
     questionArray:[],
+    animation:wx.createAnimation()
   },
   
   showLoading(message) {
@@ -172,6 +173,8 @@ Page({
             }
           }) 
         }else{  // 还未完成时，继续出题
+          this.animation.translate(0,10).step().translate(0).step()
+          this.setData({animation: this.animation.export()})
           let q=this.data.questionArray.pop()
           this.setData({  //初始化下一个题目
           operator:this.data.opArray[q[0]],
@@ -229,7 +232,9 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady() {
-
+    this.animation = wx.createAnimation({
+      duration:100
+    })
   },
 
   /**

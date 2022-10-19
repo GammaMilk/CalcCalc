@@ -23,3 +23,7 @@ page {
   border-width: 2px;
   color: #A16222
 }
+
+.hover{
+  background-color: #e5e5e5;
+}

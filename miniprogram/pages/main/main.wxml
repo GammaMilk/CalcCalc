@@ -9,19 +9,19 @@
 </view>
 
 <view class="container">
-  <view class="item" bindtap="statisticTap" style="border-color: #54BCBD;">
+  <view class="item" bindtap="statisticTap" hover-class="hover" style="border-color: #54BCBD;">
     <image src="/image/statistics.png" style="width: 33%; height: 33%;"></image>
     <text style="font-size: 30px;position: relative;top:10%">统计</text>
   </view>
-  <view class="item" bindtap="rankTap" style="border-color: #A16222;">
+  <view class="item" bindtap="rankTap" hover-class="hover" style="border-color: #A16222;">
     <image src="/image/trophy.png" style="width: 33%; height: 33%;"></image>
     <text style="font-size: 30px;position: relative;top:10%">排行</text>
   </view>
 </view>
 
-<view class='task' style="border-color: #81B337;">
-  <image src="/image/daily.png" style="width: 300rpx; height: 300rpx"></image>
+<view class='task' hover-class="hover" style="border-color: #81B337;">
+  <image src="/image/daily.png" style="width: 280rpx; height: 280rpx"></image>
   <text style="font-size: 30px;position: relative;top:10%">今日任务</text>
-<navigator url="../daily_task/daily_task" open-type="navigate" hover-class="navigator-hover" style="height: 40%;width: 90%;position: absolute;"></navigator>
+  <navigator url="../daily_task/daily_task" open-type="navigate" style="height: 40%; width: 90%; position: absolute;"></navigator>
 </view>
 
