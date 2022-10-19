@@ -54,6 +54,7 @@ var aProblem = function(d1,d2,l){
 var timerID = -1;
 var minute = 0;
 var second = 0;
+const nProblems = 20;
 
 var roomid=-1;
 var p='p';
@@ -162,6 +163,15 @@ Page({
             })
             return
           }
+          wx.cloud.callFunction({
+            name: 'quickstartFunctions',
+            data:{
+              type:'matchMgr',
+              p:p,
+              roomid:roomid,
+              time:(that.data.second - (-60*that.data.minute))
+            },
+          })
           wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
             name: 'quickstartFunctions',
             data:{
@@ -221,6 +231,7 @@ Page({
       var an=0;
       if (p=='p1') {an = res.p2count;}
       else {an = res.p1count;}
+      if (an==nProblems) an='完成'
       that.setData({anotherCount : an});
     }
   },
