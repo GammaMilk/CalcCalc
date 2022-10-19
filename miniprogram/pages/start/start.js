@@ -101,6 +101,7 @@ Page({
 
   // Merky balabala a lot which make me angry when I write this method.
   clickButton: function (event) {
+    let that = this;
     //console.log(this.data)
     if (event.target.id == 'back') {  // Tap back
       if(this.data.result=='') return
@@ -136,12 +137,14 @@ Page({
         })
         //judge if finished
         if(this.data.questionArray.length==0) {
+          this.stop();
           this.showLoading('Loading')
           let cnt=wx.getStorageSync('quantityOfQuestions')
           let uInfo=wx.getStorageSync('userInfo')
+          let rediURL = '../finish/finish?seconds='+(that.data.second - (-60*that.data.minute))+'&count='+that.data.count;
           if(!uInfo){
             wx.redirectTo({
-              url: '../finish/finish',
+              url: rediURL,
             })
             return
           }
@@ -162,7 +165,7 @@ Page({
                 },success: function() {
                   console.log("success")
                   wx.redirectTo({
-                    url: '../finish/finish',
+                    url: rediURL,
                   })
                 }
               })
@@ -270,14 +273,14 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide() {
-
+    this.stop();
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
-
+    this.stop();
   },
 
   /**
