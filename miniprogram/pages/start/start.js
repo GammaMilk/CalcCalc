@@ -51,6 +51,10 @@ var aProblem = function(d1,d2,l){
   return [op, num1, num2, ans];
 }
 
+var timerID;
+var minute = 0;
+var second = 0;
+
 Page({
   data: {
     C: 'C',
@@ -66,12 +70,14 @@ Page({
     id9: '9',
     back:'back',
     result:'',
-    opArray:['+','-','*','/'],
+    opArray:['+','-','×','÷'],
     operator:'+',
     num1:0,
     num2:0,
     ans:0,
     count:0,
+    minute:0,
+    second:0,
     questionArray:[],
   },
   
@@ -95,6 +101,7 @@ Page({
 
   // Merky balabala a lot which make me angry when I write this method.
   clickButton: function (event) {
+    let that = this;
     //console.log(this.data)
     if (event.target.id == 'back') {  // Tap back
       if(this.data.result=='') return
@@ -130,12 +137,14 @@ Page({
         })
         //judge if finished
         if(this.data.questionArray.length==0) {
+          this.stop();
           this.showLoading('Loading')
           let cnt=wx.getStorageSync('quantityOfQuestions')
           let uInfo=wx.getStorageSync('userInfo')
+          let rediURL = '../finish/finish?seconds='+(that.data.second - (-60*that.data.minute))+'&count='+that.data.count;
           if(!uInfo){
             wx.redirectTo({
-              url: '../finish/finish',
+              url: rediURL,
             })
             return
           }
@@ -156,7 +165,7 @@ Page({
                 },success: function() {
                   console.log("success")
                   wx.redirectTo({
-                    url: '../finish/finish',
+                    url: rediURL,
                   })
                 }
               })
@@ -227,21 +236,51 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    this.start()
+  },
+  
+  start: function() { //开始计时函数
+    var that = this;
+    timerID = setInterval(() => {
+      that.timer()
+    }, 1000) //每隔1s调用一次timer函数
+  },
 
+  stop: function() { //停止计时函数
+    clearInterval(timerID) //清除计时器
+  },
+
+  timer: function() { //计时函数
+    var that = this;
+    // console.log(minute)
+    // console.log(second)
+    if (second >= 59) {
+      second = 0;
+      that.setData({
+        minute: ++minute,
+        second: 0
+      })
+    } else {
+      that.setData({
+        second: ++second
+      })
+    }
+    // console.log(minute)
+    // console.log(second)
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide() {
-
+    this.stop();
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
-
+    this.stop();
   },
 
   /**

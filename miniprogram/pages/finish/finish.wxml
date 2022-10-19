@@ -1,5 +1,7 @@
 <!--pages/finish/finish.wxml-->
 <image src='/image/congratulation.png' class='image'></image>
+<view>完成{{count}}题目</view>
+<view>用时{{second}}</view>
 <view class='container'>
 <!--  style="border-style: solid; margin-top: 10%;margin-bottom: 10%;" -->
   <button bindtap="continueTap" style="width: 45%;border-style: solid;border-color: #BBBBBB;border-width: 1px;font-size: 30rpx;">再来一次</button>
