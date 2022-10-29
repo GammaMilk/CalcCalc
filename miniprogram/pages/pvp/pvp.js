@@ -479,6 +479,7 @@ Page({
 
   wsStage2(){
     const that = this;
+    that.start();
     let url = "wss://api.jsnsl.cn/ws/room/"+roomid+"/"+openid;
     console.log(url);
     // Create a websocket task.
@@ -492,12 +493,15 @@ Page({
       if (o.errno != 0) {
         // err occurred. handle
         console.error(o);
-        // TODO: 
+        wx.showToast({
+          title: '对方离开',
+          duration: 450
+        });
       } else {
         // normal condition
         that.setData({
           rival:o.anotherNickName,
-          anotherCount: anotherAdd
+          anotherCount: o.anotherAdd
         })
       }
     }) // end onMessage
