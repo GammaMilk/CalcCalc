@@ -54,9 +54,13 @@ var aProblem = function(d1,d2,l){
 var timerID = -1;
 var minute = 0;
 var second = 0;
-
+const nProblems = 20;
+var wsTask2 = null;
+var wsTask1 = null;
 var roomid=-1;
 var p='p';
+var watcherCloser = null;
+var openid = '';
 Page({
   data: {
     C: 'C',
@@ -140,15 +144,19 @@ Page({
         this.setData({
           count:this.data.count+1
         })
-        //TODO: 上传数据到数据库
-        wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
-          name: 'quickstartFunctions',
-          data:{
-            type:'matchMgr',
-            matchOption:'add',
-            roomid:roomid,
-            p:p
-          }});
+        // wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
+        //   name: 'quickstartFunctions',
+        //   data:{
+        //     type:'matchMgr',
+        //     matchOption:'add',
+        //     roomid:roomid,
+        //     p:p
+        //   }});
+
+        // 使用新型API
+        wsTask2.send({
+          data: "add"
+        })
         //judge if finished
         if(this.data.questionArray.length==0) {
           this.stop();
@@ -162,6 +170,16 @@ Page({
             })
             return
           }
+          wx.cloud.callFunction({
+            name: 'quickstartFunctions',
+            data:{
+              type:'matchMgr',
+              matchOption:'end',
+              p:p,
+              roomid:roomid,
+              time:(that.data.second - (-60*that.data.minute))
+            },
+          })
           wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
             name: 'quickstartFunctions',
             data:{
@@ -221,6 +239,7 @@ Page({
       var an=0;
       if (p=='p1') {an = res.p2count;}
       else {an = res.p1count;}
+      if (an==nProblems) an='完成'
       that.setData({anotherCount : an});
     }
   },
@@ -229,78 +248,113 @@ Page({
    */
   onLoad(options) {
     const that = this;
-    const db = wx.cloud.database();
-    // 等人匹配
+    const db = wx.cloud.database();// 等人匹配
     wx.showLoading({
       title: '正在等待匹配',
-    })
-    wx.cloud.callFunction({
-      name:'quickstartFunctions',
-      data:{type:'matchMgr',
-        matchOption:'new'  
-    }}).then(res=>{
-      if (res.result.error != '') {
-        console.error('Cloud Function ERROR', res.result.error)
-        wx.hideLoading({
-          success: (res) => {wx.showToast({
-            title: '错误！',
-            icon: 'error'
-          })},
+    });
+    wx.cloud.callFunction({ // getOpenid
+      name: 'quickstartFunctions',
+      data:{
+        type:'getOpenId'
+      }
+    }).then(res=>{
+      openid=res.result.openid;
+      roomid = -1;
+      let userInfo = wx.getStorageSync('userInfo');
+      let nickName = userInfo.nickName;
+      wsTask1 = wx.connectSocket({
+        url: "wss://api.jsnsl.cn/ws/hall"
+      });
+      wsTask1.onOpen(function onOpen(){
+        wsTask1.send({
+          data:JSON.stringify({openid:openid,nickName:nickName})
         })
+      });
+      wsTask1.onMessage(res=>{
+        var o = JSON.parse(res.data)
+        if(o.roomid!=null) {
+          // 匹配到了！！！！！
+          wx.hideLoading({
+            success: (res) => {},
+          })
+          // Got an roomid
+          roomid = o.roomid;
+          // Enter next stage.
+          that.wsStage2();
+          wsTask1.close();
+        }
+      })
+    })
+    
+    // wx.cloud.callFunction({
+    //   name:'quickstartFunctions',
+    //   data:{type:'matchMgr',
+    //     matchOption:'new'  
+    // }}).then(res=>{
+    //   if (res.result.error != '') {
+    //     console.error('Cloud Function ERROR', res.result.error)
+    //     wx.hideLoading({
+    //       success: (res) => {wx.showToast({
+    //         title: '错误！',
+    //         icon: 'error'
+    //       })},
+    //     })
         
-      }
-      p = res.result.p;
-      roomid=res.result.roomid;
-      if (roomid == undefined) roomid = -1;
-      wx.hideLoading({
-        success: (res) => {
-          if (p=='p2') {
-            wx.showToast({
-              title: '请开始作答',
-              duration: 600,
-              icon: 'success'
-            })
-          } else {
-            wx.showLoading({
-              title: '已进入匹配队列',
-          })}}})
-      // p2时直接开始作答
-      if (p == 'p2') {
-        this.start();
-        let closer = db.collection('vslist').where({roomid:roomid}).watch({
-          onChange: function(snapshot) {
-            that.snapShotHandler(snapshot);
-          },
-          onError: function(err) {
-            console.error('the watch closed because of error', err)
-          }
-        })
-        that.updateRival();
-      } else {
-        // p1 等待其他人
-        // 别忘了取消Loading弹窗
-        const db=wx.cloud.database();
-        const _ = db.command;
-        console.log('watching ',roomid);
-        let closer = db.collection('vslist').where({roomid:roomid}).watch({
-          onChange: function(snapshot) {
-            console.log('snapshot.docs: ' ,snapshot.docs)
-            if (snapshot.docs[0].stat=='doing') {
-              // 另一位玩家已经匹配到这里。
-              // 开始作答
-              that.start()
-              wx.hideLoading({
-                success: (res) => {},
-              })
-              that.updateRival();
-            } else that.snapShotHandler(snapshot);
-          },
-          onError: function(err) {
-            console.error('the watch closed because of error', err)
-          }
-        })
-      }
-    })
+    //   }
+    //   p = res.result.p;
+    //   roomid=res.result.roomid;
+    //   if (roomid == undefined) roomid = -1;
+    //   wx.hideLoading({
+    //     success: (res) => {
+    //       if (p=='p2') {
+    //         wx.showToast({
+    //           title: '请开始作答',
+    //           duration: 600,
+    //           icon: 'success'
+    //         })
+    //       } else {
+    //         wx.showLoading({
+    //           title: '已进入匹配队列',
+    //       })}}})
+    //   // p2时直接开始作答
+    //   if (p == 'p2') {
+    //     this.start();
+    //     let closer = db.collection('vslist').where({roomid:roomid}).watch({
+    //       onChange: function(snapshot) {
+    //         that.snapShotHandler(snapshot);
+    //       },
+    //       onError: function(err) {
+    //         console.error('the watch closed because of error', err)
+    //       }
+    //     })
+    //     watcherCloser = closer;
+    //     that.updateRival();
+    //   } else {
+    //     // p1 等待其他人
+    //     // 别忘了取消Loading弹窗
+    //     const db=wx.cloud.database();
+    //     const _ = db.command;
+    //     console.log('watching ',roomid);
+    //     let closer = db.collection('vslist').where({roomid:roomid}).watch({
+    //       onChange: function(snapshot) {
+    //         console.log('snapshot.docs: ' ,snapshot.docs)
+    //         if (snapshot.docs[0].stat!='waiting') {
+    //           // 另一位玩家已经匹配到这里。
+    //           // 开始作答
+    //           that.start()
+    //           wx.hideLoading({
+    //             success: (res) => {},
+    //           })
+    //           that.updateRival();
+    //         } else that.snapShotHandler(snapshot);
+    //       },
+    //       onError: function(err) {
+    //         console.error('the watch closed because of error', err)
+    //       }
+    //     })
+    //     watcherCloser = closer;
+    //   }
+    // })
     try {
       let d1=2
       let d2=2
@@ -353,6 +407,16 @@ Page({
   },
 
   stop: function() { //停止计时函数
+    if (watcherCloser != null)
+      watcherCloser.close();
+    if (wsTask2 != null) {
+      wsTask2.close();
+      wsTask2 = null;
+    }
+    if (wsTask1 != null) {
+      wsTask1.close();
+      wsTask1 = null;
+    }
     console.log("stop called")
     second=0;
     minute=0;
@@ -412,4 +476,32 @@ Page({
   onShareAppMessage() {
 
   },
+
+  wsStage2(){
+    const that = this;
+    let url = "wss://api.jsnsl.cn/ws/room/"+roomid+"/"+openid;
+    console.log(url);
+    // Create a websocket task.
+    wsTask2 = wx.connectSocket({
+      url: url,
+    });
+
+    // handle onMsg
+    wsTask2.onMessage(res=>{
+      var o = JSON.parse(res.data);
+      if (o.errno != 0) {
+        // err occurred. handle
+        console.error(o);
+        // TODO: 
+      } else {
+        // normal condition
+        that.setData({
+          rival:o.anotherNickName,
+          anotherCount: anotherAdd
+        })
+      }
+    }) // end onMessage
+
+
+  }
 })

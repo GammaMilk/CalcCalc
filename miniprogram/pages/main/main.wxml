@@ -1,6 +1,6 @@
 <!--pages/main/main.wxml-->
-<view class='helloUser' bindtap="hiddenFunc">
-  <view class='helloSize'>
+<view class='helloUser' >
+  <view class='helloSize' bindtap="hiddenFunc">
     <text >Hi,\n{{userInfo.nickName}}!</text>
   </view>
   <view class="imgSize"> 

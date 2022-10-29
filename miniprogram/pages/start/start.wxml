@@ -15,9 +15,12 @@
   <view class='question' style="text-align: end;">{{num1}}</view>
   <view>{{operator}}</view>
   <view class='question'>{{num2}}</view>
-  </view>
+</view>
 
-<view class='answer' animation='{{animation}}'>= {{result}}</view>
+<view style=display:flex;flex-direction:row;">
+  <view class='answer'> = </view>
+  <view class='answer' animation='{{animation}}'>{{result}}</view>
+</view>
 <view class='test-bg'>
   <view class='btnGroup'>
     <view class='item' hover-class="hover" hover-stay-time="100" bindtap='clickButton' id="{{id7}}">7</view>
