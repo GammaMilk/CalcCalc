@@ -495,7 +495,8 @@ Page({
         console.error(o);
         wx.showToast({
           title: '对方离开',
-          duration: 450
+          icon: 'error',
+          duration: 1500
         });
       } else {
         // normal condition
