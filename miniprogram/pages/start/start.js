@@ -94,6 +94,7 @@ var score = function (op,num1,num2) {
 var timerID = 0;
 var minute = 0;
 var second = 0;
+var score_total = 0;
 var animation;
 Page({
   data: {
@@ -202,7 +203,8 @@ Page({
                 _openid:openId
               }).update({
                 data:{
-                  count:_.inc(cnt)
+                  count:_.inc(cnt),
+                  coin: _.inc(0.0085*score_total)
                 },success: function() {
                   console.log("success")
                   wx.redirectTo({
@@ -218,6 +220,8 @@ Page({
             this.setData({animation: this.animation.export()})
           }, 30);
           let q=this.data.questionArray.pop()
+          let s = score(q[0],q[1],q[2])
+          score_total += s;
           setTimeout(() => {
             this.setData({  //初始化下一个题目
               operator:this.data.opArray[q[0]],
@@ -237,6 +241,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    score_total = 0;
     try {
       let d1=wx.getStorageSync('digit1Bits')
       let d2=wx.getStorageSync('digit2Bits')
@@ -276,6 +281,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady() {
+    score_total = 0;
     this.animation = wx.createAnimation({
       duration:100
     })
@@ -285,6 +291,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    score_total = 0;
     this.start()
   },
   
