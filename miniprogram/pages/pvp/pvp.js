@@ -51,7 +51,7 @@ var aProblem = function(d1,d2,l){
   return [op, num1, num2, ans];
 }
 
-var timerID = -1;
+var timerID = null;
 var minute = 0;
 var second = 0;
 const nProblems = 20;
@@ -61,6 +61,7 @@ var roomid=-1;
 var p='p';
 var watcherCloser = null;
 var openid = '';
+var isRunning = false;
 Page({
   data: {
     C: 'C',
@@ -144,14 +145,6 @@ Page({
         this.setData({
           count:this.data.count+1
         })
-        // wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
-        //   name: 'quickstartFunctions',
-        //   data:{
-        //     type:'matchMgr',
-        //     matchOption:'add',
-        //     roomid:roomid,
-        //     p:p
-        //   }});
 
         // 使用新型API
         wsTask2.send({
@@ -247,6 +240,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    console.log("OnLoad Called")
     const that = this;
     const db = wx.cloud.database();// 等人匹配
     wx.showLoading({
@@ -274,6 +268,7 @@ Page({
         var o = JSON.parse(res.data)
         if(o.roomid!=null) {
           // 匹配到了！！！！！
+          isRunning = true;
           wx.hideLoading({
             success: (res) => {},
           })
@@ -285,76 +280,6 @@ Page({
         }
       })
     })
-    
-    // wx.cloud.callFunction({
-    //   name:'quickstartFunctions',
-    //   data:{type:'matchMgr',
-    //     matchOption:'new'  
-    // }}).then(res=>{
-    //   if (res.result.error != '') {
-    //     console.error('Cloud Function ERROR', res.result.error)
-    //     wx.hideLoading({
-    //       success: (res) => {wx.showToast({
-    //         title: '错误！',
-    //         icon: 'error'
-    //       })},
-    //     })
-        
-    //   }
-    //   p = res.result.p;
-    //   roomid=res.result.roomid;
-    //   if (roomid == undefined) roomid = -1;
-    //   wx.hideLoading({
-    //     success: (res) => {
-    //       if (p=='p2') {
-    //         wx.showToast({
-    //           title: '请开始作答',
-    //           duration: 600,
-    //           icon: 'success'
-    //         })
-    //       } else {
-    //         wx.showLoading({
-    //           title: '已进入匹配队列',
-    //       })}}})
-    //   // p2时直接开始作答
-    //   if (p == 'p2') {
-    //     this.start();
-    //     let closer = db.collection('vslist').where({roomid:roomid}).watch({
-    //       onChange: function(snapshot) {
-    //         that.snapShotHandler(snapshot);
-    //       },
-    //       onError: function(err) {
-    //         console.error('the watch closed because of error', err)
-    //       }
-    //     })
-    //     watcherCloser = closer;
-    //     that.updateRival();
-    //   } else {
-    //     // p1 等待其他人
-    //     // 别忘了取消Loading弹窗
-    //     const db=wx.cloud.database();
-    //     const _ = db.command;
-    //     console.log('watching ',roomid);
-    //     let closer = db.collection('vslist').where({roomid:roomid}).watch({
-    //       onChange: function(snapshot) {
-    //         console.log('snapshot.docs: ' ,snapshot.docs)
-    //         if (snapshot.docs[0].stat!='waiting') {
-    //           // 另一位玩家已经匹配到这里。
-    //           // 开始作答
-    //           that.start()
-    //           wx.hideLoading({
-    //             success: (res) => {},
-    //           })
-    //           that.updateRival();
-    //         } else that.snapShotHandler(snapshot);
-    //       },
-    //       onError: function(err) {
-    //         console.error('the watch closed because of error', err)
-    //       }
-    //     })
-    //     watcherCloser = closer;
-    //   }
-    // })
     try {
       let d1=2
       let d2=2
@@ -387,12 +312,6 @@ Page({
   onReady() {
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-    // this.start()
-  },
   
   start: function() { //开始计时函数
     var that = this;
@@ -401,9 +320,7 @@ Page({
       second=0;
       minute=0;
     }
-    timerID = setInterval(() => {
-      that.timer()
-    }, 1000) //每隔1s调用一次timer函数
+    this.resume();
   },
 
   stop: function() { //停止计时函数
@@ -420,13 +337,24 @@ Page({
     console.log("stop called")
     second=0;
     minute=0;
-    clearInterval(timerID) //清除计时器
+    this.pause();
+  },
+
+  pause: function () {
+    clearInterval(timerID);
+    timerID = null;
+  },
+
+  resume: function () {
+    if (timerID == null){
+      timerID = setInterval(() => {
+        this.timer()
+      }, 1000) //每隔1s调用一次timer函数
+    }
   },
 
   timer: function() { //计时函数
     var that = this;
-    // console.log(minute)
-    // console.log(second)
     if (second >= 59) {
       second = 0;
       that.setData({
@@ -438,21 +366,29 @@ Page({
         second: ++second
       })
     }
-    // console.log(minute)
-    // console.log(second)
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide() {
-    this.stop();
+    console.log("onHide Called")
+    this.pause();
   },
 
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow() {
+    console.log("OnShow Called")
+    if (isRunning)
+    this.resume()
+  },
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
+    console.log("onUnload Called")
     this.stop();
   },
 
