@@ -50,6 +50,46 @@ var aProblem = function(d1,d2,l){
   }
   return [op, num1, num2, ans];
 }
+/**
+ * @brief get the score of the problem
+ * @param {number} op Operator in [0,1,2,3]
+ * @param {number} num1 Number 1
+ * @param {number} num2 Number 2
+ * @returns the score of the problem
+ */
+var score = function (op,num1,num2) {
+  // get digits of num1 and num2
+  var d1 = num1.toString().length;
+  var d2 = num2.toString().length;
+
+  // assert d1>=d2
+  if (d1 < d2){
+    var tmp = d1;
+    d1 = d2;
+    d2 = tmp;
+  }
+
+  // for op==0 or 1, score = ((d1+d2)/2)^1.9
+  // for op==2, score = d1*(2.5*d2+0.05*d2^2+((d1+d2)/2)^1.9)
+  // for op==3, score = d1-d2+1
+
+  var s = 0;
+  switch(op){
+    case 0:
+    case 1:
+      s = Math.pow((d1+d2)/2, 1.9);
+      break;
+    case 2:
+      s = d1*(2.5*d2+0.05*Math.pow(d2,2)+Math.pow((d1+d2)/2,1.9));
+      break;
+    case 3:
+      s = d1-d2+1;
+      break;
+    default:
+      break;
+  }
+  return s;
+}
 
 var timerID = 0;
 var minute = 0;
