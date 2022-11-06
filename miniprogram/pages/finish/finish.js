@@ -6,7 +6,8 @@ Page({
    */
   data: {
     count:0,
-    second:0
+    second:0,
+    coin:0
   },
 
   continueTap(){
@@ -35,7 +36,8 @@ Page({
     console.log(options)
     this.setData({
       count:options.count,
-      second:options.seconds
+      second:options.seconds,
+      coin:options.coin*0.0085
     })
     wx.cloud.callFunction({
       name:'quickstartFunctions',

@@ -183,7 +183,7 @@ Page({
           this.showLoading('正在完成')
           let cnt=wx.getStorageSync('quantityOfQuestions')
           let uInfo=wx.getStorageSync('userInfo')
-          let rediURL = '../finish/finish?seconds='+(that.data.second - (-60*that.data.minute))+'&count='+that.data.count;
+          let rediURL = '../finish/finish?seconds='+(that.data.second - (-60*that.data.minute))+'&count='+that.data.count+'&coin='+score_total;
           if(!uInfo){
             wx.redirectTo({
               url: rediURL,

@@ -4,6 +4,8 @@
 <text>{{count}}</text></view>
 <view class="achieve">用时
 <text>{{second}}</text></view>
+<view class="achieve">硬币
+<text>+{{coin}}</text></view>
 <image src='/image/congratulation.png' class='image'></image>
 
 <view class='container'>

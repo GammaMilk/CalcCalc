@@ -18,7 +18,7 @@
   </view>
 
 <view style="display:flex;flex-direction:row;width: 100%;justify-content: center;">
-  <view style="font-size: 30px;"> = </view>
+  <view style="font-size: 30px;" animation='{{animation}}'> = </view>
   <view class='answer' animation='{{animation}}'>{{result}}</view>
 </view>
 <view class='test-bg'>
