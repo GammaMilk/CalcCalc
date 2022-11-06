@@ -16,7 +16,7 @@ page{
 }
 .card{
     border-style: solid;
-    border-color:blue;
+    border-color:palevioletred;
     border-radius: 5%;
     border-width: 2px;
     display: flex;
@@ -28,7 +28,7 @@ page{
 .yuan{
     font-size: 60rpx;
     font-weight: bold;
-    color: blue;
+    color: palevioletred;
 }
 .imageset{
     display: flex;

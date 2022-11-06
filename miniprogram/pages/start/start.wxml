@@ -17,8 +17,8 @@
   <view class='question'>{{num2}}</view>
 </view>
 
-<view style=display:flex;flex-direction:row;">
-  <view class='answer'> = </view>
+<view style="display:flex;flex-direction:row;width: 100%;justify-content: center;">
+  <view style="font-size: 30px;"> = </view>
   <view class='answer' animation='{{animation}}'>{{result}}</view>
 </view>
 <view class='test-bg'>

@@ -1,3 +1,14 @@
 <!--pages/daily_task/daily_task.wxml-->
 <view class='notice'>今日任务</view>
-<view class='start' bindtap="startTap" hover-class="hover">一起摇滚吧</view>
+<view class="container" bindtap="navitodf">
+<view class="selector">当前难度
+<text>{{bit1}}位数与{{bit2}}位数的{{df}}</text>
+</view>
+<view class="selector">剩余题数
+<text>{{num}}</text></view>
+<view></view>
+</view>
+<view class='start' bindtap="startTap" hover-class="hover">
+
+<text>一起摇滚吧</text>
+</view>

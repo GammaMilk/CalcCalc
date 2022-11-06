@@ -1,4 +1,7 @@
 // pages/statistic/statistic.js
+var context = wx.createContext()
+var res = wx.getSystemInfoSync()
+var width = new Array(7)
 Page({
 
   /**
@@ -38,6 +41,13 @@ Page({
         x6:r.result.x6,
         x7:r.result.x7,
       })
+      width.push(this.data.x7)
+      width.push(this.data.x6)
+      width.push(this.data.x5)
+      width.push(this.data.x4)
+      width.push(this.data.x3)
+      width.push(this.data.x2)
+      width.push(this.data.x1)
       console.log(r)
     }).catch(err=>{
       console.error(err)
@@ -55,7 +65,24 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
+    for(var i=1;i<=7;i++){
+      //开始创建一个路径
+      context.beginPath()
+      //设置纯色填充
+      context.setFillStyle("blue")
+      //添加一个矩形路径到当前路径
+      var wid = res.screenWidth*width.pop()*0.5/30
+      console.log(wid)
+      context.rect(0, 0, wid, 30)
+      //对当前路径进行填充
+      context.fill()
+      wx.drawCanvas({
+      canvasId: 'Canvastiaoxing' + String(i),
+      actions: context.getActions()
+  })
+    }
 
+    
   },
 
   /**

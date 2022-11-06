@@ -5,12 +5,43 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bit1:1,
+    bit2:1,
+    level:['加减','加减乘','加减乘除'],
+    num:30,
+    dif:0,
+    df:'jb'
+  },
 
+  setStorageData(){
+    try {
+      let dif=wx.getStorageSync("arithmeticLevel")
+      let bit1=wx.getStorageSync("digit1Bits")
+      let bit2=wx.getStorageSync("digit2Bits")
+      let num=wx.getStorageSync("quantityOfQuestions")
+      if ((dif+1)&&bit1&&bit2&&num) {
+        this.setData({
+          df:this.data.level[dif+1],
+          bit1:bit1,
+          bit2:bit2,
+          num:num
+        })
+        console.log(this.data.df)
+      }
+    } catch (e) {
+      console.log(e)
+    }
   },
 
   startTap(){
     wx.redirectTo({
       url: '../start/start',
+    })
+  },
+
+  navitodf(){
+    wx.redirectTo({
+      url: '../question_difficulty/question_difficulty',
     })
   },
 
@@ -32,7 +63,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow() {
-
+    this.setStorageData();
   },
 
   /**
