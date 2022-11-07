@@ -91,11 +91,38 @@ var score = function (op,num1,num2) {
   return s;
 }
 
+var uploadFenshu = function (add) {
+  return new Promise(function (resolve, reject) {
+    wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
+      name: 'quickstartFunctions',
+      data:{
+        type:'rank',
+        add:add
+      },
+      success:res=>{
+        resolve(res.result)
+      },
+      fail:err=>{
+        reject(err)
+      }
+    })
+  })
+}
+
+var ticketCost = function(score) {
+  if (score <= 99) return 10;
+  else if (score <= 299) return 15;
+  else if (score <= 799) return 20;
+  return 30;
+}
+
 var timerID = 0;
 var minute = 0;
 var second = 0;
 var score_total = 0;
 var animation;
+var isRank = false;
+var rankScore = 0;
 Page({
   data: {
     C: 'C',
@@ -179,11 +206,25 @@ Page({
         })
         //judge if finished
         if(this.data.questionArray.length==0) {
+          // 注意：注意：这里用户已经写完了。
+          // 我们需要保存这次的结果!!!
           this.stop();
           this.showLoading('正在完成')
           let cnt=wx.getStorageSync('quantityOfQuestions')
           let uInfo=wx.getStorageSync('userInfo')
-          let rediURL = '../finish/finish?seconds='+(that.data.second - (-60*that.data.minute))+'&count='+that.data.count+'&coin='+score_total;
+          var usedSeconds = (that.data.second - (-60*that.data.minute))
+
+          var addScore = 0;
+          if (isRank) {
+            // 排位赛处理逻辑：
+            addScore = score_total/usedSeconds*35;
+            console.log("用户获得了这些分数：",addScore)
+            var ticket = ticketCost(rankScore);
+            addScore -= ticket;
+            uploadFenshu(addScore)
+          }
+          
+          let rediURL = '../finish/finish?seconds='+usedSeconds+'&count='+that.data.count+'&coin='+score_total+'&addScore'+addScore;
           if(!uInfo){
             wx.redirectTo({
               url: rediURL,
@@ -241,7 +282,16 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    if (options.isRank == 1) isRank = true;
     score_total = 0;
+
+    // 更新页面上当前的排位分数
+    if (isRank) {
+      uploadFenshu(0).then(res=>{
+        console.log("当前的排位分数：",res)
+      })
+    }
+
     try {
       let d1=wx.getStorageSync('digit1Bits')
       let d2=wx.getStorageSync('digit2Bits')
