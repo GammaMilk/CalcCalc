@@ -5,7 +5,11 @@
 <view class="achieve">用时
 <text>{{second}}</text></view>
 <view class="achieve">硬币
-<text>+{{coin}}</text></view>
+<text>+{{coin*0.0085}}</text></view>
+<block wx:if="{{isRank}}">
+  <view class="achieve">得分
+<text>{{coin-score}}</text></view>
+</block>
 <image src='/image/congratulation.png' class='image'></image>
 
 <view class='container'>

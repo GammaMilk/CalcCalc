@@ -17,7 +17,7 @@
 <button size="mini" bindtap="showinfo">点此查看排位规则</button>
 <modal title="第一赛季积分赛规则" hidden="{{modalHidden}}" bindconfirm="modalConfirm" bindcancel="modalCancel">
     <view>
-      <image class="image" src="/image/rankInfo.png" mode='aspectFill'></image>
+      <image class="image" src="/image/rankInfo.png" style="height: 600rpx;width: 500rpx;"></image>
     </view>
     <view>明白了？</view>
   </modal>

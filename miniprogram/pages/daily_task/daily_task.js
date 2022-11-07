@@ -23,7 +23,7 @@ Page({
       let num=wx.getStorageSync("quantityOfQuestions")
       if ((dif+1)&&bit1&&bit2&&num) {
         this.setData({
-          df:this.data.level[dif+1],
+          df:this.data.level[dif],
           bit1:bit1,
           bit2:bit2,
           num:num
@@ -55,6 +55,7 @@ Page({
     this.setData({
       isRank:1-this.data.isRank
     })
+    console.log(this.data.isRank)
   },
 
   /**

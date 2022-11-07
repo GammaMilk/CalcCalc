@@ -1,5 +1,30 @@
 // pages/finish/finish.js
+var ticketCost = function(score) {
+  if (score <= 99) return 10;
+  else if (score <= 299) return 15;
+  else if (score <= 799) return 20;
+  return 30;
+}
+var uploadFenshu = function (add) {
+  return new Promise(function (resolve, reject) {
+    wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
+      name: 'quickstartFunctions',
+      data:{
+        type:'rank',
+        add:add
+      },
+      success:res=>{
+        resolve(res.result)
+      },
+      fail:err=>{
+        reject(err)
+      }
+    })
+  })
+}
 Page({
+
+  
 
   /**
    * 页面的初始数据
@@ -7,7 +32,9 @@ Page({
   data: {
     count:0,
     second:0,
-    coin:0
+    coin:0,
+    isRank:false,
+    score:0
   },
 
   continueTap(){
@@ -37,7 +64,14 @@ Page({
     this.setData({
       count:options.count,
       second:options.seconds,
-      coin:options.coin*0.0085
+      coin:options.coin
+    })
+    if(options.isRank==1) this.setData({isRank:true})
+    uploadFenshu(0).then(res=>{
+      console.log("当前的排位分数：",res)
+      this.setData({
+        score:ticketCost(res)
+      })
     })
     wx.cloud.callFunction({
       name:'quickstartFunctions',
