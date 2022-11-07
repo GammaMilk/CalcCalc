@@ -1,4 +1,5 @@
 <!--pages/daily_task/daily_task.wxml-->
+<view>pvp</view>
 <view class='notice'>今日任务</view>
 <view class="container" bindtap="navitodf">
 <view class="selector">当前难度
@@ -9,6 +10,14 @@
 <view></view>
 </view>
 <view class='start' bindtap="startTap" hover-class="hover">
-
 <text>一起摇滚吧</text>
 </view>
+
+<switch type="checkbox" bindtap="changeRank">是否加入排位赛</switch>
+<button size="mini" bindtap="showinfo">点此查看排位规则</button>
+<modal title="第一赛季积分赛规则" hidden="{{modalHidden}}" bindconfirm="modalConfirm" bindcancel="modalCancel">
+    <view>
+      <image class="image" src="/image/rankInfo.png" mode='aspectFill'></image>
+    </view>
+    <view>明白了？</view>
+  </modal>
