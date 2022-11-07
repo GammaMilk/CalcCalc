@@ -1,3 +1,31 @@
 <!--pages/daily_task/daily_task.wxml-->
+<view>pvp</view>
 <view class='notice'>今日任务</view>
-<view class='start' bindtap="startTap">一起摇滚吧</view>
+<view class="container" bindtap="navitodf">
+<view class="selector">当前难度
+<text>{{bit1}}位数与{{bit2}}位数的{{df}}</text>
+</view>
+<view class="selector">剩余题数
+<text>{{num}}</text></view>
+<view></view>
+</view>
+<view class='start' bindtap="startTap" hover-class="hover">
+<text>一起摇滚吧</text>
+</view>
+
+<switch type="checkbox" bindtap="changeRank">是否加入排位赛</switch>
+<button size="mini" bindtap="showinfo">点此查看排位规则</button>
+<view wx:if="{{isRank&&isRankReady}}" style="display: flex;flex-direction: column;align-items: center;">
+积分：{{fenshu}}
+<image wx:if="{{ruchangfei==10}}" src="/image/silver.png" style="height: 200rpx;width: 200rpx;"></image>
+<image wx:if="{{ruchangfei==15}}" src="/image/gold.png" style="height: 200rpx;width: 200rpx;"></image>
+<image wx:if="{{ruchangfei==20}}" src="/image/Diamond.png" style="height: 200rpx;width: 200rpx;"></image>
+<image wx:if="{{ruchangfei==30}}" src="/image/master.png" style="height: 200rpx;width: 200rpx;"></image>
+入场费：{{ruchangfei}}
+</view>
+<modal title="第一赛季积分赛规则" hidden="{{modalHidden}}" bindconfirm="modalConfirm" bindcancel="modalCancel">
+    <view>
+      <image class="image" src="/image/rankInfo.png" style="height: 600rpx;width: 500rpx;"></image>
+    </view>
+    <view>明白了？</view>
+</modal>

@@ -1,4 +1,4 @@
-// pages/start/start.js
+// pages/pvp/pvp.js
 /**
  * @brief generate a problem from user's selected digs and level
  * @param d1: int, number of digits of num1
@@ -50,79 +50,18 @@ var aProblem = function(d1,d2,l){
   }
   return [op, num1, num2, ans];
 }
-/**
- * @brief get the score of the problem
- * @param {number} op Operator in [0,1,2,3]
- * @param {number} num1 Number 1
- * @param {number} num2 Number 2
- * @returns the score of the problem
- */
-var score = function (op,num1,num2) {
-  // get digits of num1 and num2
-  var d1 = num1.toString().length;
-  var d2 = num2.toString().length;
 
-  // assert d1>=d2
-  if (d1 < d2){
-    var tmp = d1;
-    d1 = d2;
-    d2 = tmp;
-  }
-
-  // for op==0 or 1, score = ((d1+d2)/2)^1.9
-  // for op==2, score = d1*(2.5*d2+0.05*d2^2+((d1+d2)/2)^1.9)
-  // for op==3, score = d1-d2+1
-
-  var s = 0;
-  switch(op){
-    case 0:
-    case 1:
-      s = Math.pow((d1+d2)/2, 1.9);
-      break;
-    case 2:
-      s = d1*(2.5*d2+0.05*Math.pow(d2,2)+Math.pow((d1+d2)/2,1.9));
-      break;
-    case 3:
-      s = d1-d2+1;
-      break;
-    default:
-      break;
-  }
-  return s;
-}
-
-var uploadFenshu = function (add) {
-  return new Promise(function (resolve, reject) {
-    wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
-      name: 'quickstartFunctions',
-      data:{
-        type:'rank',
-        add:add
-      },
-      success:res=>{
-        resolve(res.result)
-      },
-      fail:err=>{
-        reject(err)
-      }
-    })
-  })
-}
-
-var ticketCost = function(score) {
-  if (score <= 99) return 10;
-  else if (score <= 299) return 15;
-  else if (score <= 799) return 20;
-  return 30;
-}
-
-var timerID = 0;
+var timerID = null;
 var minute = 0;
 var second = 0;
-var score_total = 0;
-var animation;
-var isRank = 0;
-var rankScore = 0;
+const nProblems = 20;
+var wsTask2 = null;
+var wsTask1 = null;
+var roomid=-1;
+var p='p';
+var watcherCloser = null;
+var openid = '';
+var isRunning = false;
 Page({
   data: {
     C: 'C',
@@ -147,8 +86,8 @@ Page({
     minute:0,
     second:0,
     questionArray:[],
-    quantityOfQuestion:0,
-    animation:wx.createAnimation()
+    anotherCount:0,
+    rival:'对手'
   },
   
   showLoading(message) {
@@ -202,39 +141,42 @@ Page({
         if finished, navigate to finish page
       */
       if(this.data.result==this.data.ans){
-        if(this.data.count+1<this.data.quantityOfQuestion){
-          this.setData({
-            count:this.data.count+1
-          })
-        }
+        // 答对了！
+        this.setData({
+          count:this.data.count+1
+        })
+
+        // 使用新型API
+        wsTask2.send({
+          data: "add"
+        })
         //judge if finished
         if(this.data.questionArray.length==0) {
-          // 注意：注意：这里用户已经写完了。
-          // 我们需要保存这次的结果!!!
           this.stop();
-          this.showLoading('正在完成')
+          this.showLoading('Loading')
           let cnt=wx.getStorageSync('quantityOfQuestions')
           let uInfo=wx.getStorageSync('userInfo')
-          var usedSeconds = (that.data.second - (-60*that.data.minute))
-
-          var addScore = 0;
-          if (isRank) {
-            // 排位赛处理逻辑：
-            addScore = score_total/usedSeconds*27;
-            console.log("用户获得了这些分数：",addScore)
-            var ticket = ticketCost(rankScore);
-            console.log("用户的门票费用是：",ticket)
-            addScore -= ticket;
-            uploadFenshu(addScore)
-          }
-          
-          let rediURL = '../finish/finish?seconds='+usedSeconds+'&count='+that.data.count+'&coin='+score_total+'&addScore='+addScore+'&isRank='+isRank;
+          let rediURL = '../finish/finish?seconds='+(that.data.second - (-60*that.data.minute))+'&count='+that.data.count;
           if(!uInfo){
             wx.redirectTo({
               url: rediURL,
             })
             return
           }
+          wx.cloud.callFunction({
+            name: 'quickstartFunctions',
+            data:{
+              type:'matchMgr',
+              matchOption:'end',
+              p:p,
+              roomid:roomid,
+              time:(that.data.second - (-60*that.data.minute))
+            },
+          })
+          // 完成了 直接跳转走。。。数据库成不成功再说。
+          wx.redirectTo({
+            url: rediURL,
+          })
           wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
             name: 'quickstartFunctions',
             data:{
@@ -248,90 +190,92 @@ Page({
                 _openid:openId
               }).update({
                 data:{
-                  count:_.inc(cnt),
-                  coin: _.inc(0.0085*score_total)
+                  count:_.inc(cnt)
                 },success: function() {
-                  console.log("success")
-                  wx.redirectTo({
-                    url: rediURL,
-                  })
+                  console.log("success to increase")
                 }
               })
             }
           }) 
         }else{  // 还未完成时，继续出题
-          setTimeout(() => {
-            this.animation.translate(0,5).step().translate(0).step()
-            this.setData({animation: this.animation.export()})
-          }, 30);
           let q=this.data.questionArray.pop()
-          let s = score(q[0],q[1],q[2])
-          score_total += s;
-          setTimeout(() => {
-            this.setData({  //初始化下一个题目
-              operator:this.data.opArray[q[0]],
-              num1:q[1],
-              num2:q[2],
-              ans:q[3],
-              result:'',
-              questionArray:this.data.questionArray
-            })
-          }, 150);
-        }
-      }
-    }
-  },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-    
-    console.log("options:",options)
-    if (options.isRank == 1) isRank = 1;
-    else isRank = 0;
-    score_total = 0;
-
-    // 更新页面上当前的排位分数
-    if (isRank) {
-      console.warn("排位赛!!!!")
-      uploadFenshu(0).then(res=>{
-        console.log("当前的排位分数：",res)
-        rankScore = res;
-      })
-    }
-
-    try {
-      let d1=wx.getStorageSync('digit1Bits')
-      let d2=wx.getStorageSync('digit2Bits')
-      let l=wx.getStorageSync('arithmeticLevel')+1
-      let quantity=wx.getStorageSync("quantityOfQuestions") 
-      if(d1=='') {
-        d1=1,d2=1,l=1,quantity=30
-        wx.setStorageSync('digit1Bits', 1)
-        wx.setStorageSync('digit2Bits', 1)
-        wx.setStorageSync('arithmeticLevel', 1)
-        wx.setStorageSync('quantityOfQuestions', 30)
-      }
-      if (d1&&d2&&l&&quantity) {
-        let qArray=[]
-        for(let i=1;i<=quantity;++i){
-          qArray.push(aProblem(d1,d2,l))
-        }
-        this.setData({
-          questionArray:qArray,
-          quantityOfQuestion:quantity
-        })
-        console.log(this.data.questionArray)
-        let q=this.data.questionArray.pop()
-        this.setData({  //初始化第一个题目
+          this.setData({  //初始化下一个题目
           operator:this.data.opArray[q[0]],
           num1:q[1],
           num2:q[2],
           ans:q[3],
+          result:'',
           questionArray:this.data.questionArray
-        })
+      })
+        }
       }
+    }
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad(options) {
+    console.log("OnLoad Called")
+    const that = this;
+    const db = wx.cloud.database();// 等人匹配
+    wx.showLoading({
+      title: '正在等待匹配',
+    });
+    wx.cloud.callFunction({ // getOpenid
+      name: 'quickstartFunctions',
+      data:{
+        type:'getOpenId'
+      }
+    }).then(res=>{
+      openid=res.result.openid;
+      roomid = -1;
+      let userInfo = wx.getStorageSync('userInfo');
+      let nickName = userInfo.nickName;
+      wsTask1 = wx.connectSocket({
+        url: "wss://api.jsnsl.cn/ws/hall"
+      });
+      wsTask1.onOpen(function onOpen(){
+        wsTask1.send({
+          data:JSON.stringify({openid:openid,nickName:nickName})
+        })
+      });
+      wsTask1.onMessage(res=>{
+        var o = JSON.parse(res.data)
+        if(o.roomid!=null) {
+          // 匹配到了！！！！！
+          isRunning = true;
+          wx.hideLoading({
+            success: (res) => {},
+          })
+          // Got an roomid
+          roomid = o.roomid;
+          // Enter next stage.
+          that.wsStage2();
+          wsTask1.close();
+        }
+      })
+    })
+    try {
+      let d1=2
+      let d2=2
+      let l=2
+      let quantity=20
+      let qArray=[]
+      while(quantity--){
+        qArray.push(aProblem(d1,d2,l))
+      }
+      this.setData({
+        questionArray:qArray
+      })
+      console.log(this.data.questionArray)
+      let q=this.data.questionArray.pop()
+      this.setData({  //初始化第一个题目
+        operator:this.data.opArray[q[0]],
+        num1:q[1],
+        num2:q[2],
+        ans:q[3],
+        questionArray:this.data.questionArray
+      })
     } catch (error) {
       console.log(error)
     }
@@ -341,42 +285,51 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady() {
-    score_total = 0;
-    this.animation = wx.createAnimation({
-      duration:100
-    })
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-    score_total = 0;
-    this.start()
-  },
   
   start: function() { //开始计时函数
     var that = this;
-    if (timerID != 0) {
-      // 清零上一个timer
-      this.stop();
+    if (timerID!=-1) {
+      that.stop();
+      second=0;
+      minute=0;
     }
-    timerID = setInterval(() => {
-      that.timer()
-    }, 1000) //每隔1s调用一次timer函数
+    this.resume();
   },
 
   stop: function() { //停止计时函数
-    clearInterval(timerID) //清除计时器
-    timerID=0;
-    minute=0;
+    if (watcherCloser != null)
+      watcherCloser.close();
+    if (wsTask2 != null) {
+      wsTask2.close();
+      wsTask2 = null;
+    }
+    if (wsTask1 != null) {
+      wsTask1.close();
+      wsTask1 = null;
+    }
+    console.log("stop called")
     second=0;
+    minute=0;
+    this.pause();
+  },
+
+  pause: function () {
+    clearInterval(timerID);
+    timerID = null;
+  },
+
+  resume: function () {
+    if (timerID == null){
+      timerID = setInterval(() => {
+        this.timer()
+      }, 1000) //每隔1s调用一次timer函数
+    }
   },
 
   timer: function() { //计时函数
     var that = this;
-    // console.log(minute)
-    // console.log(second)
     if (second >= 59) {
       second = 0;
       that.setData({
@@ -388,21 +341,29 @@ Page({
         second: ++second
       })
     }
-    // console.log(minute)
-    // console.log(second)
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide() {
-    this.stop();
+    console.log("onHide Called")
+    this.pause();
   },
 
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow() {
+    console.log("OnShow Called")
+    if (isRunning)
+    this.resume()
+  },
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
+    console.log("onUnload Called")
     this.stop();
   },
 
@@ -424,6 +385,47 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage() {
+
+  },
+
+  wsStage2(){
+    const that = this;
+    that.start();
+    let url = "wss://api.jsnsl.cn/ws/room/"+roomid+"/"+openid;
+    console.log(url);
+    // Create a websocket task.
+    wsTask2 = wx.connectSocket({
+      url: url,
+    });
+
+    // handle onMsg
+    wsTask2.onMessage(res=>{
+      var o = JSON.parse(res.data);
+      if (o.errno != 0) {
+        // err occurred. handle
+        console.error(o);
+        if (that.data.anotherCount >= 20) {
+          wx.showToast({
+            title: '对方已完成！',
+            icon: 'success',
+            duration: 1500
+          });
+        } else {
+          wx.showToast({
+            title: '对方离开比赛！',
+            icon: 'error',
+            duration: 2000
+          });
+        }
+      } else {
+        // normal condition
+        that.setData({
+          rival:o.anotherNickName,
+          anotherCount: o.anotherAdd
+        })
+      }
+    }) // end onMessage
+
 
   }
 })

@@ -1,36 +1,48 @@
 <!--pages/start/start.wxml-->
-<view style="font-size: 40rpx;position: relative; left: 40%;">第{{count+1}}题</view>
+<view class='testStatus'>
+  <view class='iconSet'>
+    <image src='/image/time.png' class='icon' mode="heightFix"></image>
+    <view>{{minute}}:{{second}}</view>
+  </view>
+  <view class='iconSet'>
+    <view>{{count+1}} / {{quantityOfQuestion}}</view>
+    <image src='/image/question.png' class='icon' mode="heightFix"></image>
+  </view>
+</view>
 
-<view class='screen'>
+
+<view class='screen' animation='{{animation}}'>
   <view class='question' style="text-align: end;">{{num1}}</view>
   <view>{{operator}}</view>
   <view class='question'>{{num2}}</view>
 </view>
 
-<view class='answer'>= {{result}}</view>
-
+<view style="display:flex;flex-direction:row;width: 100%;justify-content: center;">
+  <view style="font-size: 30px;" animation='{{animation}}'> = </view>
+  <view class='answer' animation='{{animation}}'>{{result}}</view>
+</view>
 <view class='test-bg'>
   <view class='btnGroup'>
-    <view class='item' bindtap='clickButton' id="{{id7}}">7</view>
-    <view class='item' bindtap='clickButton' id="{{id8}}">8</view>
-    <view class='item' bindtap='clickButton' id="{{id9}}">9</view>
+    <view class='item' hover-class="hover" hover-stay-time="100" bindtap='clickButton' id="{{id7}}">7</view>
+    <view class='item' hover-class="hover" hover-stay-time="100" bindtap='clickButton' id="{{id8}}">8</view>
+    <view class='item' hover-class="hover" hover-stay-time="100" bindtap='clickButton' id="{{id9}}">9</view>
   </view>
  
   <view class='btnGroup'>
-    <view class='item' bindtap='clickButton' id="{{id4}}">4</view>
-    <view class='item' bindtap='clickButton' id="{{id5}}">5</view>
-    <view class='item' bindtap='clickButton' id="{{id6}}">6</view>
+    <view class='item' hover-class="hover" hover-stay-time="100" bindtap='clickButton' id="{{id4}}">4</view>
+    <view class='item' hover-class="hover" hover-stay-time="100" bindtap='clickButton' id="{{id5}}">5</view>
+    <view class='item' hover-class="hover" hover-stay-time="100" bindtap='clickButton' id="{{id6}}">6</view>
   </view>
  
   <view class='btnGroup'>
-    <view class='item' bindtap='clickButton' id="{{id1}}">1</view>
-    <view class='item' bindtap='clickButton' id="{{id2}}">2</view>
-    <view class='item' bindtap='clickButton' id="{{id3}}">3</view>
+    <view class='item' hover-class="hover" hover-stay-time="100" bindtap='clickButton' id="{{id1}}">1</view>
+    <view class='item' hover-class="hover" hover-stay-time="100" bindtap='clickButton' id="{{id2}}">2</view>
+    <view class='item' hover-class="hover" hover-stay-time="100" bindtap='clickButton' id="{{id3}}">3</view>
   </view>
  
   <view class='btnGroup'>
-    <view class='item' bindtap='clickButton' id="{{C}}">C</view>
-    <view class='item' bindtap='clickButton' id="{{id0}}">0</view>
-    <view class='item' bindtap='clickButton' id="{{back}}">B</view>
+    <view class='item' hover-class="hover" hover-stay-time="100" bindtap='clickButton' id="{{C}}">C</view>
+    <view class='item' hover-class="hover" hover-stay-time="100" bindtap='clickButton' id="{{id0}}">0</view>
+    <view class='item' hover-class="hover" hover-stay-time="100" bindtap='clickButton' id="{{back}}">B</view>
   </view>
 </view>

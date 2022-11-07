@@ -4,6 +4,15 @@ page {
   height: 100%;
 }
 
+.point{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	overflow: hidden;
+	padding: 1%;
+}
+
 .title1{
   display: flex;
   justify-content: center;

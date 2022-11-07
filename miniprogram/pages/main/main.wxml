@@ -1,7 +1,7 @@
 <!--pages/main/main.wxml-->
-<view class='helloUser'>
-  <view class='helloSize'>
-    <text>Hi,\n{{userInfo.nickName}}!</text>
+<view class='helloUser' >
+  <view class='helloSize' bindtap="hiddenFunc">
+    <text >Hi,\n{{userInfo.nickName}}!</text>
   </view>
   <view class="imgSize"> 
     <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" bindtap="clickImg"></image>
@@ -9,19 +9,24 @@
 </view>
 
 <view class="container">
-  <view class="item" bindtap="statisticTap" style="border-color: #54BCBD;">
+  <view class="item" bindtap="statisticTap" hover-class="hover" style="border-color: #54BCBD;">
     <image src="/image/statistics.png" style="width: 33%; height: 33%;"></image>
     <text style="font-size: 30px;position: relative;top:10%">统计</text>
   </view>
-  <view class="item" bindtap="rankTap" style="border-color: #A16222;">
+  <view class="item" bindtap="rankTap" hover-class="hover" style="border-color: #A16222;">
     <image src="/image/trophy.png" style="width: 33%; height: 33%;"></image>
     <text style="font-size: 30px;position: relative;top:10%">排行</text>
   </view>
 </view>
 
-<view class='task' style="border-color: #81B337;">
-  <image src="/image/daily.png" style="width: 300rpx; height: 300rpx"></image>
+<view class='task' wx:if="{{isPVP==0}}" hover-class="hover" style="border-color: #81B337;" bindtap="navitodt">
+  <image src="/image/switch.png" style="position: absolute;width: 100rpx;height: 100rpx;right: 10%;bottom: 35%; color: #2177b8;" bindtap="changeMode"></image>
+  <image src="/image/daily.png" style="width: 280rpx; height: 280rpx"></image>
   <text style="font-size: 30px;position: relative;top:10%">今日任务</text>
-<navigator url="../daily_task/daily_task" open-type="navigate" hover-class="navigator-hover" style="height: 40%;width: 90%;position: absolute;"></navigator>
 </view>
 
+<view class='task' wx:else hover-class="hover" style="border-color: #81B337;" bindtap="navitopvp">
+  <image src="/image/switch.png" style="position: absolute;width: 100rpx;height: 100rpx;right: 10%;bottom: 35%; color: #2177b8;" bindtap="changeMode"></image>
+  <image src="/image/battle.webp" style="width: 280rpx; height: 280rpx"></image>
+  <text style="font-size: 30px;position: relative;top:10%">PVP</text>
+</view>

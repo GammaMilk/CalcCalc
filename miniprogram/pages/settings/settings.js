@@ -124,7 +124,7 @@ Page({
             userInfo:userInfo,
             isVisitor:false,
             isVIP:ress.data[0].isvip,
-            coin:ress.data[0].coin,
+            coin:ress.data[0].coin.toFixed(5),
           })
           this.hideLoading()
         })

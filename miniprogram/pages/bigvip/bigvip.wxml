@@ -2,10 +2,10 @@
 <view class="imgSize"> 
   <image class='head' src="{{userInfo.avatarUrl}}" mode="aspectFill" ></image>
 </view>
+<text style="font-size: 30px;">普通用户与大会员的区别</text>
+<image src="/image/comparison.png"></image>
 
-<view style="color: gray;font-size: small;">解锁大会员可立得60枚硬币，并解锁更多功能</view>
-
-<button type="primary" bindtap="handlePay">V我50</button>
+<view class="vme50" bindtap="handlePay">立即解锁大会员</view>
 
 
 

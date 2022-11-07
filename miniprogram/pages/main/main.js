@@ -7,7 +7,8 @@ Page({
     userInfo:{
       nickName:"User",
       avatarUrl:"/image/"+(Math.random()*2+1).toFixed(0)+".jpg",
-    }
+    },
+    isPVP:0
   },
   
   // 对游客弹出一个禁止窗口 
@@ -24,7 +25,29 @@ Page({
       url: '../settings/settings',
     })
   },
+
+  changeMode(){
+    this.setData({
+      isPVP:1-this.data.isPVP
+    })
+  },
   
+  navitodt(){
+    if(this.data.isPVP==0){
+       wx.navigateTo({
+      url: '../daily_task/daily_task',
+    })
+    }
+  },
+
+  navitopvp(){
+    if(this.data.isPVP==1){
+       wx.navigateTo({
+      url: '../pvp/pvp',
+    })
+    }
+  },
+
   statisticTap(){
     let uInfo=wx.getStorageSync('userInfo')
     if(uInfo){
@@ -48,7 +71,7 @@ Page({
   },
 
   /*
-    @breif: send a msgbox ask whether user provide his info and set userInfo in data
+    @brief: send a msgbox ask whether user provide his info and set userInfo in data
   */
   getNewUserInfo() {
     var that = this;
@@ -142,7 +165,14 @@ Page({
       })
     }
   },
-
+  hiddenFunc() {
+    console.log("Test func. ")
+    wx.navigateTo({
+      url: '../pvp/pvp',
+    }).catch(err=>{
+      console.error(err)
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */

@@ -12,28 +12,28 @@
     <text class="label2">未完成</text>
   </view>
 </view>
-
 <view class="weekly">
-  <view class="seven">
+  <view class="point">
     星期日{{x7}}
+    <canvas style="width: 75%; height: 50rpx;" canvas-id="Canvastiaoxing7"></canvas>
   </view>
-  <view class="six">
-    星期六{{x6}}
+  <view class="point">
+    星期六{{x6}}<canvas style="width: 75%; height: 50rpx;" canvas-id="Canvastiaoxing6"></canvas>
   </view>
-  <view class="five">
-    星期五{{x5}}
+  <view class="point">
+    星期五{{x5}}<canvas style="width: 75%; height: 50rpx;" canvas-id="Canvastiaoxing5"></canvas>
   </view>
-  <view class="four">
-    星期四{{x4}}
+  <view class="point">
+    星期四{{x4}}<canvas style="width: 75%; height: 50rpx;" canvas-id="Canvastiaoxing4"></canvas>
   </view>
-  <view class="three">
-    星期三{{x3}}
+  <view class="point">
+    星期三{{x3}}<canvas style="width: 75%; height: 50rpx;" canvas-id="Canvastiaoxing3"></canvas>
   </view>
-  <view class="two">
-    星期二{{x2}}
+  <view class="point">
+    星期二{{x2}}<canvas style="width: 75%; height: 50rpx;" canvas-id="Canvastiaoxing2"></canvas>
   </view>
-  <view class="one">
-    星期一{{x1}}
+  <view class="point">
+    星期一{{x1}}<canvas style="width: 75%; height: 50rpx;" canvas-id="Canvastiaoxing1"></canvas>
   </view>
   <view class="percentage">
     <text decode="{{true}}">0%&nbsp;&nbsp;&nbsp;20%&nbsp;&nbsp;&nbsp;40%&nbsp;&nbsp;&nbsp;60%&nbsp;&nbsp;&nbsp;80%&nbsp;&nbsp;&nbsp;100%</text>
@@ -46,7 +46,7 @@
     <text class="undone">未完成</text>
   </view>
   <view class="global">
-    <text>击败了全球 的用户</text>
+    <text>击败了全球{{quanqiu}}%的用户</text>
   </view>
 </view>
 

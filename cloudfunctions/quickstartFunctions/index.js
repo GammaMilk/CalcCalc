@@ -2,6 +2,9 @@ const getOpenId = require('./getOpenId/index');
 const getTask = require('./getTask/index')
 const updateTask = require('./updateTask/index')
 const createTask = require('./createTask/index')
+const matchMgr = require('./matchMgr/index')
+
+const rank = require('./rank/index')
 
 
 // 云函数入口函数
@@ -15,5 +18,9 @@ exports.main = async (event, context) => {
       return await updateTask.main(event,context);
     case 'createTask':
       return await createTask.main(event,context);
+    case 'matchMgr':
+      return await matchMgr.main(event, context);
+    case 'rank':
+      return await rank.main(event,context);
   }
 };

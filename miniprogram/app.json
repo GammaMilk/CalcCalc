@@ -12,7 +12,8 @@
     "pages/bigvip/bigvip",
     "pages/handlePay/handlePay",
     "pages/settings/settings",
-    "pages/cropimg/cropimg"
+    "pages/cropimg/cropimg",
+    "pages/pvp/pvp"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
