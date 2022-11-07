@@ -46,7 +46,7 @@
     <text class="undone">未完成</text>
   </view>
   <view class="global">
-    <text>击败了全球 的用户</text>
+    <text>击败了全球{{quanqiu}}%的用户</text>
   </view>
 </view>
 
