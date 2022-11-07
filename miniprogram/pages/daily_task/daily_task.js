@@ -101,13 +101,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    this.setData({
+      isRank:0
+    })
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady() {
+    this.setData({
+      isRank:0
+    })
 
   },
 
@@ -116,12 +121,18 @@ Page({
    */
   onShow() {
     this.setStorageData();
+    this.setData({
+      isRank:0
+    })
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide() {
+    this.setData({
+      isRank:0
+    })
 
   },
 
@@ -129,6 +140,9 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
+    this.setData({
+      isRank:0
+    })
 
   },
 

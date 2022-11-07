@@ -288,7 +288,8 @@ Page({
   onLoad(options) {
     
     console.log("options:",options)
-    if (options.isRank === '1') isRank = 1;
+    if (options.isRank == 1) isRank = 1;
+    else isRank = 0;
     score_total = 0;
 
     // 更新页面上当前的排位分数
