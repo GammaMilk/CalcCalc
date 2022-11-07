@@ -70,7 +70,7 @@ Page({
     uploadFenshu(0).then(res=>{
       console.log("当前的排位分数：",res)
       this.setData({
-        score:ticketCost(res)
+        score:options.addScore
       })
     })
     wx.cloud.callFunction({
