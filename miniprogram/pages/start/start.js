@@ -147,6 +147,7 @@ Page({
     minute:0,
     second:0,
     questionArray:[],
+    quantityOfQuestion:0,
     animation:wx.createAnimation()
   },
   
@@ -283,6 +284,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    
     console.log("options:",options)
     if (options.isRank == 1) isRank = 1;
     score_total = 0;
@@ -310,6 +312,9 @@ Page({
       }
       if (d1&&d2&&l&&quantity) {
         let qArray=[]
+        this.setData({
+          quantityOfQuestion:quantity
+        })
         while(quantity--){
           qArray.push(aProblem(d1,d2,l))
         }

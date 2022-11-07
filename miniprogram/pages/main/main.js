@@ -48,7 +48,7 @@ Page({
   },
 
   /*
-    @breif: send a msgbox ask whether user provide his info and set userInfo in data
+    @brief: send a msgbox ask whether user provide his info and set userInfo in data
   */
   getNewUserInfo() {
     var that = this;
