@@ -17,31 +17,34 @@ exports.main = async (event, context) => {
   const now = new Date();
   var d = dbres.data[0];
   var unchanged = true;
-  if(d.x1l > now - new Date(0,0,7)) {
+  let sevendays = 7*24*60*60*1000;
+  var lastKiss = new Date(now - sevendays)
+  console.log("lastkiss:",lastKiss)
+  if(d.x1l < lastKiss) {
     d.x1=0;
     unchanged = false;
   }
-  if (d.x2l > now - new Date(0,0,7)) {
+  if (d.x2l < lastKiss) {
     d.x2=0;
     unchanged = false;
   }
-  if (d.x3l > now - new Date(0,0,7)) {
+  if (d.x3l < lastKiss) {
     d.x3=0;
     unchanged = false;
   }
-  if (d.x4l > now - new Date(0,0,7)) {
+  if (d.x4l < lastKiss) {
     d.x4=0;
     unchanged = false;
   }
-  if (d.x5l > now - new Date(0,0,7)) {
+  if (d.x5l < lastKiss) {
     d.x5=0;
     unchanged = false;
   }
-  if (d.x6l > now - new Date(0,0,7)) {
+  if (d.x6l < lastKiss) {
     d.x6=0;
     unchanged = false;
   }
-  if (d.x7l > now - new Date(0,0,7)) {
+  if (d.x7l < lastKiss) {
     d.x7=0;
     unchanged = false;
   }
