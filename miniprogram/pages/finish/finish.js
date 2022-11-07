@@ -60,19 +60,30 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    function fixx(num,x) {
+      var xs = num.toString().split(".")
+      if (xs.length<2) return num.toString();
+      return xs[0]+'.'+xs[1].substring(0,x)
+    }
     console.log(options)
+    var coin = options.coin*0.0085
     this.setData({
       count:options.count,
       second:options.seconds,
-      coin:options.coin
+      coin:fixx(coin,4)
     })
-    if(options.isRank==1) this.setData({isRank:true})
-    uploadFenshu(0).then(res=>{
-      console.log("当前的排位分数：",res)
+    if(options.isRank==1) {
+      this.setData({isRank:true})
+      var s = '';
+      if (options.addScore>0) {
+        s+='+';
+      }
+      s+=fixx(options.addScore,2);
       this.setData({
-        score:options.addScore
+          score:s
       })
-    })
+    }
+    
     wx.cloud.callFunction({
       name:'quickstartFunctions',
       data:{
