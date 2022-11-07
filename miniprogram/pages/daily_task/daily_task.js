@@ -10,7 +10,9 @@ Page({
     level:['加减','加减乘','加减乘除'],
     num:30,
     dif:0,
-    df:'jb'
+    df:'jb',
+    isRank:0,
+    modalHidden:true
   },
 
   setStorageData(){
@@ -40,11 +42,52 @@ Page({
   },
 
   navitodf(){
+    let rediURL = '../start/start?isRank='+this.data.isRank;
+    wx.redirectTo({
+      url: rediURL,
+    })
     wx.redirectTo({
       url: '../question_difficulty/question_difficulty',
     })
   },
 
+  
+ 
+
+  changeRank(){
+    this.setData({
+      isRank:1
+    })
+  },
+
+  /**
+   * 显示弹窗
+   */
+  showinfo: function() {
+    this.setData({
+      modalHidden: false
+    })
+  },
+
+  /**
+   * 点击取消
+   */
+  modalCancel: function() {
+    // do something
+    this.setData({
+      modalHidden: true
+    })
+  },
+
+  /**
+   *  点击确认
+   */
+  modalConfirm: function() {
+    // do something
+    this.setData({
+      modalHidden: true
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
