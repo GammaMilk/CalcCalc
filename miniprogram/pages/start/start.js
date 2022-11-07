@@ -217,9 +217,10 @@ Page({
           var addScore = 0;
           if (isRank) {
             // 排位赛处理逻辑：
-            addScore = score_total/usedSeconds*35;
+            addScore = score_total/usedSeconds*27;
             console.log("用户获得了这些分数：",addScore)
             var ticket = ticketCost(rankScore);
+            console.log("用户的门票费用是：",ticket)
             addScore -= ticket;
             uploadFenshu(addScore)
           }
@@ -291,6 +292,7 @@ Page({
       console.warn("排位赛!!!!")
       uploadFenshu(0).then(res=>{
         console.log("当前的排位分数：",res)
+        rankScore = res;
       })
     }
 
