@@ -36,16 +36,13 @@ Page({
   },
 
   startTap(){
-    wx.redirectTo({
-      url: '../start/start',
-    })
-  },
-
-  navitodf(){
     let rediURL = '../start/start?isRank='+this.data.isRank;
     wx.redirectTo({
       url: rediURL,
     })
+  },
+
+  navitodf(){
     wx.redirectTo({
       url: '../question_difficulty/question_difficulty',
     })
@@ -56,7 +53,7 @@ Page({
 
   changeRank(){
     this.setData({
-      isRank:1
+      isRank:1-this.data.isRank
     })
   },
 

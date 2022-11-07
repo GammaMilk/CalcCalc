@@ -121,7 +121,7 @@ var minute = 0;
 var second = 0;
 var score_total = 0;
 var animation;
-var isRank = false;
+var isRank = 0;
 var rankScore = 0;
 Page({
   data: {
@@ -224,7 +224,7 @@ Page({
             uploadFenshu(addScore)
           }
           
-          let rediURL = '../finish/finish?seconds='+usedSeconds+'&count='+that.data.count+'&coin='+score_total+'&addScore'+addScore;
+          let rediURL = '../finish/finish?seconds='+usedSeconds+'&count='+that.data.count+'&coin='+score_total+'&addScore='+addScore+'&isRank='+isRank;
           if(!uInfo){
             wx.redirectTo({
               url: rediURL,
@@ -282,11 +282,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    if (options.isRank == 1) isRank = true;
+    console.log("options:",options)
+    if (options.isRank == 1) isRank = 1;
     score_total = 0;
 
     // 更新页面上当前的排位分数
     if (isRank) {
+      console.warn("排位赛!!!!")
       uploadFenshu(0).then(res=>{
         console.log("当前的排位分数：",res)
       })
