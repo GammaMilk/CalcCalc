@@ -90,7 +90,10 @@ Page({
         type:'updateTask',
         count:wx.getStorageSync('quantityOfQuestions')
       }
-    }).catch(err=>{
+    }).then(res=>{
+      console.log(res)
+    })
+    .catch(err=>{
       console.error(err);
     })
   },

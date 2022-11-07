@@ -19,7 +19,7 @@ exports.main = async (event, context) => {
   // const openid = cloud.getWXContext().OPENID;
   console.log(event)
   const count = event.count;
-  const date = new Date();
+  const date = new Date(new Date().getTime() + (480*60*1000 + new Date().getTimezoneOffset()*60*1000));
   const day = date.getDay();
   const openid = cloud.getWXContext().OPENID;
   console.log("DAY")
@@ -78,5 +78,5 @@ exports.main = async (event, context) => {
       x7l: t.x7l,
     }
   })
-  return t;
+  return {t,day,date,a:new Date().getTimezoneOffset()};
 };
