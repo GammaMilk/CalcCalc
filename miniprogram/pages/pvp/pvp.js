@@ -173,6 +173,10 @@ Page({
               time:(that.data.second - (-60*that.data.minute))
             },
           })
+          // 完成了 直接跳转走。。。数据库成不成功再说。
+          wx.redirectTo({
+            url: rediURL,
+          })
           wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
             name: 'quickstartFunctions',
             data:{
@@ -188,10 +192,7 @@ Page({
                 data:{
                   count:_.inc(cnt)
                 },success: function() {
-                  console.log("success")
-                  wx.redirectTo({
-                    url: rediURL,
-                  })
+                  console.log("success to increase")
                 }
               })
             }
@@ -208,32 +209,6 @@ Page({
       })
         }
       }
-    }
-  },
-  updateRival:function(){
-    // 看看另一位玩家是谁
-    wx.cloud.callFunction({
-      name:'quickstartFunctions',
-      data:{type:'matchMgr',
-        matchOption:'another',
-        p:p,
-        roomid:roomid
-    }}).then(res=>{
-      console.log(res.result)
-      this.setData({rival:res.result})
-    })
-  },
-  snapShotHandler:function (snapshot) {
-    const that = this;
-    if (snapshot.docs[0].stat=='updating') {
-      // 正在更新数据
-      const res = snapshot.docs[0].result;
-      // update anotherCount
-      var an=0;
-      if (p=='p1') {an = res.p2count;}
-      else {an = res.p1count;}
-      if (an==nProblems) an='完成'
-      that.setData({anotherCount : an});
     }
   },
   /**
@@ -429,11 +404,19 @@ Page({
       if (o.errno != 0) {
         // err occurred. handle
         console.error(o);
-        wx.showToast({
-          title: '对方离开',
-          icon: 'error',
-          duration: 1500
-        });
+        if (that.data.anotherCount >= 20) {
+          wx.showToast({
+            title: '对方已完成！',
+            icon: 'success',
+            duration: 1500
+          });
+        } else {
+          wx.showToast({
+            title: '对方离开比赛！',
+            icon: 'error',
+            duration: 2000
+          });
+        }
       } else {
         // normal condition
         that.setData({
