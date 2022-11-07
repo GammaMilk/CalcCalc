@@ -19,9 +19,14 @@
   </view>
 </view>
 
-<view class='task' hover-class="hover" style="border-color: #81B337;">
+<view class='task' wx:if="{{isPVP==0}}" hover-class="hover" style="border-color: #81B337;" bindtap="navitodt">
+  <image src="/image/switch.png" style="position: absolute;width: 100rpx;height: 100rpx;right: 10%;bottom: 35%; color: #2177b8;" bindtap="changeMode"></image>
   <image src="/image/daily.png" style="width: 280rpx; height: 280rpx"></image>
   <text style="font-size: 30px;position: relative;top:10%">今日任务</text>
-  <navigator url="../daily_task/daily_task" open-type="navigate" style="height: 40%; width: 90%; position: absolute;"></navigator>
 </view>
 
+<view class='task' wx:else hover-class="hover" style="border-color: #81B337;" bindtap="navitopvp">
+  <image src="/image/switch.png" style="position: absolute;width: 100rpx;height: 100rpx;right: 10%;bottom: 35%; color: #2177b8;" bindtap="changeMode"></image>
+  <image src="/image/battle.webp" style="width: 280rpx; height: 280rpx"></image>
+  <text style="font-size: 30px;position: relative;top:10%">PVP</text>
+</view>

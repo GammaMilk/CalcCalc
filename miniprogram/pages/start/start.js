@@ -202,9 +202,11 @@ Page({
         if finished, navigate to finish page
       */
       if(this.data.result==this.data.ans){
-        this.setData({
-          count:this.data.count+1
-        })
+        if(this.data.count+1<this.data.quantityOfQuestion){
+          this.setData({
+            count:this.data.count+1
+          })
+        }
         //judge if finished
         if(this.data.questionArray.length==0) {
           // 注意：注意：这里用户已经写完了。
@@ -312,14 +314,12 @@ Page({
       }
       if (d1&&d2&&l&&quantity) {
         let qArray=[]
-        this.setData({
-          quantityOfQuestion:quantity
-        })
-        while(quantity--){
+        for(let i=1;i<=quantity;++i){
           qArray.push(aProblem(d1,d2,l))
         }
         this.setData({
-          questionArray:qArray
+          questionArray:qArray,
+          quantityOfQuestion:quantity
         })
         console.log(this.data.questionArray)
         let q=this.data.questionArray.pop()
