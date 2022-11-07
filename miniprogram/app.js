@@ -1,5 +1,28 @@
 // app.js
 App({
+  uploadFenshu:function (add) {
+    return new Promise(function (resolve, reject) {
+      wx.cloud.callFunction({ // 完成设定的任务数量时，记录到数据库
+        name: 'quickstartFunctions',
+        data:{
+          type:'rank',
+          add:add
+        },
+        success:res=>{
+          resolve(res.result)
+        },
+        fail:err=>{
+          reject(err)
+        }
+      })
+    })
+  },
+  ticketCost: function(score) {
+    if (score <= 99) return 10;
+    else if (score <= 299) return 15;
+    else if (score <= 799) return 20;
+    return 30;
+  },
   onLaunch: function () {
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力');

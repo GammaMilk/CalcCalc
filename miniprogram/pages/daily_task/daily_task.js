@@ -1,4 +1,6 @@
 // pages/daily_task/daily_task.js
+const app = getApp();
+
 Page({
 
   /**
@@ -12,6 +14,9 @@ Page({
     dif:0,
     df:'jb',
     isRank:0,
+    isRankReady:0,
+    fenshu:-1,
+    ruchangfei:-1,
     modalHidden:true
   },
 
@@ -55,7 +60,13 @@ Page({
     this.setData({
       isRank:1-this.data.isRank
     })
-    console.log(this.data.isRank)
+    if (this.data.fenshu==-1) {
+      this.setData({fenshu:0});
+      app.uploadFenshu(0).then(res=>{
+        this.setData({fenshu:res,ruchangfei:app.ticketCost(res),isRankReady:1})
+        
+      })
+    }
   },
 
   /**
